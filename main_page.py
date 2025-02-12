@@ -22,6 +22,7 @@ st.divider()
 st.header('Welcome to the main page!')
 st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 
+"""
 def dthu():
     # path = "D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
     # files_Dthu = glob(os.path.join(path, "Dthu\\*.csv"))
@@ -143,6 +144,6 @@ styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['Thực Hiện',
 
 # Display the styled DataFrame
 st.write(styled_df.to_html(), unsafe_allow_html=True)
-
+"""
 
 
