@@ -6,8 +6,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def dthu():
-    path = "D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
-    files_Dthu = glob(os.path.join(path, "Dthu\\*.csv"))
+    # path = "D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
+    # files_Dthu = glob(os.path.join(path, "Dthu\\*.csv"))
+    files_Dthu = glob(".\Dthu\*.csv"))
 
     df = pd.concat([pd.read_csv(file, encoding='utf-8', sep=',', header=0) for file in files_Dthu])
     df["Month year"] = pd.to_datetime(df["Month year"]).dt.strftime('%m-%Y')
