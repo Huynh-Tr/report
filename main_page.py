@@ -23,7 +23,7 @@ st.header('Welcome to the main page!')
 st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 
 
-files_Dthu = glob(".\Dthu\*csv")
+files_Dthu = glob("Dthu\*csv")
 df = pd.read_csv(files_Dthu[0], encoding='utf-8', sep=',', header=0)
 
 # def dthu():
