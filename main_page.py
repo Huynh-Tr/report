@@ -24,7 +24,7 @@ st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 
 
 files_Dthu = glob("Dthu\*.csv")
-files_Dthu
+st.write(files_Dthu)
 
 # def dthu():
 #     # path = "D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
