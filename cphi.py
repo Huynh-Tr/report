@@ -22,7 +22,7 @@ cphi_parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.par
 def cphi():        
     df = pd.read_parquet(cphi_parquet)
     df_cp = df[df["Month year"] != "Month year"]
-    df_cp["Month year"] = pd.to_datetime(df_cp["Month year"]).dt.to_period('M')
+    # df_cp["Month year"] = pd.to_datetime(df_cp["Month year"]).dt.to_period('M')
 
     # create MaCH column with condition right 4 chartacters of cost center code if not null else right 4 characters of GL Account Code
     df_cp["MaCH"] = df_cp["Cost Center Code"].fillna(df_cp["Plant Code"].astype('str')).astype('int').astype('str').str[-4:] \
