@@ -17,10 +17,10 @@ warnings.filterwarnings("ignore")
 #         st.error("Failed to load data from GitHub.")
 #         return None
 
-cphi_parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.parquet"
+parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.parquet"
 
 def cphi():        
-    df = pd.read_parquet(dthu_parquet)
+    df = pd.read_parquet(parquet)
     df["Month year"] = pd.to_datetime(df["Month year"]).dt.to_period('M')
 
     # create MaCH column with condition right 4 chartacters of cost center code if not null else right 4 characters of GL Account Code

@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore")
 #         st.error("Failed to load data from GitHub.")
 #         return None
 
-dthu_parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/dthu.parquet"
+parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/dthu.parquet"
 
 def dthu():
     # path = "D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
@@ -25,7 +25,7 @@ def dthu():
     # files_Dthu = load_github_files()
 
     # df = pd.concat([pd.read_parquet(file) for file in load_github_files()]).dropna()
-    df = pd.read_parquet(dthu_parquet)
+    df = pd.read_parquet(parquet)
     df = df[df["Month year"] != "Month year"]
     df["Month year"] = pd.to_datetime(df["Month year"]).dt.to_period('M')
     lv2 = ["DÂY ĐỒNG HỒ", "MẮT KÍNH", "ĐỒNG HỒ"]
