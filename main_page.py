@@ -59,36 +59,36 @@ year = col3.multiselect('Select year:', year, default=year[-1])
 # month_year = col2.multiselect('Select month year:', month_year, default=month_year)
 
 if plant_code == ['Select All']:
-    sum_fm_tsv01 = data_tsv[data_tsv["Month year"].str.contains('|'.join(map(str, year)))]["FM 01_Invoices Revenue"].sum() / 1e9
+    sum_fm_tsv01 = data_tsv[data_tsv["Month year"] == year]["FM 01_Invoices Revenue"].sum() / 1e9
     st.write(f'Doanh Thu TSV: {sum_fm_tsv01:.2f} tỉ')
 
-    sum_fm_vm01 = data_vm[data_vm["Month year"].str.contains('|'.join(map(str, year)))]["FM 01_Invoices Revenue"].sum() / 1e9
+    sum_fm_vm01 = data_vm[data_vm["Month year"] == year]["FM 01_Invoices Revenue"].sum() / 1e9
     st.write(f'Doanh Thu VM: {sum_fm_vm01:.2f} tỉ')
 
     # sum of FM 07_Gross Profit
-    sum_fm_tsv07 = data_tsv[data_tsv["Month year"].str.contains('|'.join(map(str, year)))]["FM 07_Gross Profit"].sum() / 1e9
+    sum_fm_tsv07 = data_tsv[data_tsv["Month year"] == year]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp: {sum_fm_tsv07:.2f} tỉ')
 
-    sum_fm_vm07 = data_vm[data_vm["Month year"].str.contains('|'.join(map(str, year)))]["FM 07_Gross Profit"].sum() / 1e9
+    sum_fm_vm07 = data_vm[data_vm["Month year"] == year]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp: {sum_fm_vm07:.2f} tỉ')
     
     # # sum of cphi
-    # sum_fm_cp = data_cp[data_cp["Month year"].str.contains('|'.join(map(str, year)))]["FM. Loc Amt"].sum() / 1e9
+    # sum_fm_cp = data_cp[data_cp["Month year"] == year]["FM. Loc Amt"].sum() / 1e9
     # st.write(f'Chi Phí: {sum_fm_cp:.2f} tỉ')
 else:
     # sum of FM 01_Invoices Revenue
-    sum_fm_tsv01 = data_tsv[data_tsv["Plant Code"].isin(plant_code) & data_tsv["Month year"].str.contains('|'.join(map(str, year)))]["FM 01_Invoices Revenue"].sum() / 1e9
+    sum_fm_tsv01 = data_tsv[data_tsv["Plant Code"].isin(plant_code) & data_tsv["Month year"] == year]["FM 01_Invoices Revenue"].sum() / 1e9
     st.write(f'Doanh Thu TSV: {sum_fm_tsv01:.2f} tỉ')
 
-    sum_fm_vm01 = data_vm[data_vm["Plant Code"].isin(plant_code) & data_vm["Month year"].str.contains('|'.join(map(str, year)))]["FM 01_Invoices Revenue"].sum() / 1e9
+    sum_fm_vm01 = data_vm[data_vm["Plant Code"].isin(plant_code) & data_vm["Month year"] == year]["FM 01_Invoices Revenue"].sum() / 1e9
     st.write(f'Doanh Thu VM: {sum_fm_vm01:.2f} tỉ')
 
 
     # sum of FM 07_Gross Profit
-    sum_fm_tsv07 = data_tsv[data_tsv["Plant Code"].isin(plant_code) & data_tsv["Month year"].str.contains('|'.join(map(str, year)))]["FM 07_Gross Profit"].sum() / 1e9
+    sum_fm_tsv07 = data_tsv[data_tsv["Plant Code"].isin(plant_code) & data_tsv["Month year"] == year]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp TSV: {sum_fm_tsv07:.2f} tỉ')
 
-    sum_fm_vm07 = data_vm[data_vm["Plant Code"].isin(plant_code) & data_vm["Month year"].str.contains('|'.join(map(str, year)))]["FM 07_Gross Profit"].sum() / 1e9
+    sum_fm_vm07 = data_vm[data_vm["Plant Code"].isin(plant_code) & data_vm["Month year"] == year]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp VM: {sum_fm_vm07:.2f} tỉ')
 
 result = pd.DataFrame(
