@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def load_github_files():
-    url = 'https://api.github.com/repos/Huynh-Tr/report/contents/Dthu'
+    url = 'https://api.github.com/repos/Huynh-Tr/report/contents/dthu_parquet_files'
     response = requests.get(url)
     if response.status_code == 200:
         files = pd.DataFrame(response.json())
@@ -22,7 +22,7 @@ def dthu():
     # files_Dthu = glob(os.path.join(path, "Dthu\\*.csv"))
     # files_Dthu = load_github_files()
 
-    df = pd.concat([pd.read_csv(file, encoding='utf-8', sep=',', header=0) for file in load_github_files()])
+    df = pd.concat([pd.read_parquet(file) for file in load_github_files()])
     # df["Month year"] = pd.to_datetime(df["Month year"]).dt.to_period('M')
     # lv2 = ["DÂY ĐỒNG HỒ", "MẮT KÍNH", "ĐỒNG HỒ"]
     # lv3 = ["CAO"]
