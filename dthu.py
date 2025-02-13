@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore")
 #         st.error("Failed to load data from GitHub.")
 #         return None
 
-dthu_parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\output.parquet"
+dthu_parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/output.parquet"
 
 def dthu():
     # path = "D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
