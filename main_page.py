@@ -51,7 +51,7 @@ plant_code = ['Select All'] + plant_code.tolist()
 plant_code = col1.multiselect('Select plant code:', plant_code, default='Select All')
 
 # multi selection year
-year = pd.to_datetime(data_tsv["Month year"]).dt.year.unique()
+year = pd.to_datetime(data_tsv["Month year"]).dt.year
 year = col3.multiselect('Select year:', year, default=year[-1])
 
 # # multi selection month year
