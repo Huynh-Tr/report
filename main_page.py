@@ -64,7 +64,7 @@ year = col3.multiselect('Select year:', year, default=year[-1])
 # month_year = col2.multiselect('Select month year:', month_year, default=month_year)
 
 if plant_code == ['Select All']:
-    sum_fm_tsv01 = data_tsv[data_tsv["Month year"].dt.year.isin(year)]["FM 01_Invoices Revenue"].astype('float').sum() / 1e9
+    sum_fm_tsv01 = data_tsv[data_tsv["Month year"].dt.year.isin(year)]["FM 01_Invoices Revenue"].sum() / 1e9
     st.write(f'Doanh Thu TSV: {sum_fm_tsv01:.2f} tỉ')
 
     sum_fm_vm01 = data_vm[data_vm["Month year"].dt.year.isin(year)]["FM 01_Invoices Revenue"].sum() / 1e9

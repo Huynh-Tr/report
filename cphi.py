@@ -36,3 +36,5 @@ def cphi():
 
     # filter data cols with gl_code_exl and in range gl_code_range
     df_cp = df_cp[cols][(df_cp["GL Account Code"] != gl_code_exl) & (df_cp["GL Account Code"].between(gl_code_range[0], gl_code_range[1]))]
+
+    return df_cp
