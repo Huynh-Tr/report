@@ -98,16 +98,17 @@ else:
 
 result = pd.DataFrame(
     {
-        'Chỉ Tiêu': ['Doanh thu', 'TSV', 'VM', 'Lãi Gộp', 'TSV', 'VM'],
-        '': ['', '', '', '', '', ''],
+        'Chỉ Tiêu': ['Doanh thu', 'TSV', 'VM', 'Lãi Gộp', 'TSV', 'VM', "Chi Phí Vận Hành", "Chi Phí Nhân Viên", "Chi Phí Ngoài Lương", 'CP CCDC', 'CP KH TSCĐ', 'CP vật liệu phụ',
+       'CP Còn lại', 'CP Thuê ngoài', 'CP hành chính', 'CP chuyển tiền', 'CP Marketing & Khuyến mãi', 'CP sửa chữa, bảo trì'],
+        '': ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
         'Thực Hiện': [round(sum_fm_tsv01 + sum_fm_vm01), round(sum_fm_tsv01), round(sum_fm_vm01), round(sum_fm_tsv07 + sum_fm_vm07), round(sum_fm_tsv07), round(sum_fm_vm07)],
         'Cùng Kỳ': [round(sum_fm_tsv01 + sum_fm_vm01), round(sum_fm_tsv01), round(sum_fm_vm01), round(sum_fm_tsv07 + sum_fm_vm07), round(sum_fm_tsv07), round(sum_fm_vm07)],
         'Kế Hoạch': [round(sum_fm_tsv01 + sum_fm_vm01), round(sum_fm_tsv01), round(sum_fm_vm01), round(sum_fm_tsv07 + sum_fm_vm07), round(sum_fm_tsv07), round(sum_fm_vm07)],
-        ' ': ['', '', '', '', '', ''],
+        ' ': ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
         'LK Thực Hiện': [round(sum_fm_tsv01 + sum_fm_vm01), round(sum_fm_tsv01), round(sum_fm_vm01), round(sum_fm_tsv07 + sum_fm_vm07), round(sum_fm_tsv07), round(sum_fm_vm07)],
         'LK Cùng Kỳ': [round(sum_fm_tsv01 + sum_fm_vm01), round(sum_fm_tsv01), round(sum_fm_vm01), round(sum_fm_tsv07 + sum_fm_vm07), round(sum_fm_tsv07), round(sum_fm_vm07)],
         'LK Kế Hoạch': [round(sum_fm_tsv01 + sum_fm_vm01), round(sum_fm_tsv01), round(sum_fm_vm01), round(sum_fm_tsv07 + sum_fm_vm07), round(sum_fm_tsv07), round(sum_fm_vm07)],
-        '  ': ['', '', '', '', '', ''],
+        '  ': ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
         'LK Thực Hiện ': [round(sum_fm_tsv01 + sum_fm_vm01), round(sum_fm_tsv01), round(sum_fm_vm01), round(sum_fm_tsv07 + sum_fm_vm07), round(sum_fm_tsv07), round(sum_fm_vm07)],
         'KH Năm': [round(sum_fm_tsv01 + sum_fm_vm01), round(sum_fm_tsv01), round(sum_fm_vm01), round(sum_fm_tsv07 + sum_fm_vm07), round(sum_fm_tsv07), round(sum_fm_vm07)]
     }
