@@ -23,7 +23,7 @@ def dthu():
     files_Dthu = load_github_files()
 
     df = pd.concat([pd.read_csv(file, encoding='utf-8', sep=',', header=0) for file in files_Dthu])
-    df["Month year"] = pd.to_datetime(df["Month year"]).dt.strftime('%m-%Y')
+    df["Month year"] = pd.to_datetime(df["Month year"]).dt.to_period('M')
     lv2 = ["DÂY ĐỒNG HỒ", "MẮT KÍNH", "ĐỒNG HỒ"]
     lv3 = ["CAO"]
     lv4 = ["TRANH/TƯỢNG/BIỂU TƯỢNG", "VÀNG ÉP SIÊU PNJ", "VÀNG ÉP SIÊU SJC"]

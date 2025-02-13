@@ -11,6 +11,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import dthu
+import cphi
 from helper import *
 
 # layout wide
@@ -28,6 +29,7 @@ start = time.time()
 
 # load data
 data_tsv, data_vm = dthu.dthu()
+data_cp = cphi.cphi()
 
 st.html('''
 <style>
@@ -68,6 +70,10 @@ if plant_code == ['Select All']:
 
     sum_fm_vm07 = data_vm[data_vm["Month year"].str.contains('|'.join(map(str, year)))]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp: {sum_fm_vm07:.2f} tỉ')
+    
+    # sum of cphi
+    sum_fm_cp = data_cp[data_cp["Month year"].str.contains('|'.join(map(str, year)))]["FM. Loc Amt"].sum() / 1e9
+    st.write(f'Chi Phí: {sum_fm_cp:.2f} tỉ')
 else:
     # sum of FM 01_Invoices Revenue
     sum_fm_tsv01 = data_tsv[data_tsv["Plant Code"].isin(plant_code) & data_tsv["Month year"].str.contains('|'.join(map(str, year)))]["FM 01_Invoices Revenue"].sum() / 1e9
