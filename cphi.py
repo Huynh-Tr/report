@@ -6,19 +6,22 @@ import requests
 import warnings
 warnings.filterwarnings("ignore")
 
-def load_github_files():
-    url = 'https://api.github.com/repos/Huynh-Tr/report/contents/CP'
-    response = requests.get(url)
-    if response.status_code == 200:
-        files = pd.DataFrame(response.json())
-        files['name'] = files['name'].str.replace('.csv', '')
-        return files['download_url'].tolist()
-    else:
-        st.error("Failed to load data from GitHub.")
-        return None
+# def load_github_files():
+#     url = 'https://api.github.com/repos/Huynh-Tr/report/contents/CP'
+#     response = requests.get(url)
+#     if response.status_code == 200:
+#         files = pd.DataFrame(response.json())
+#         files['name'] = files['name'].str.replace('.csv', '')
+#         return files['download_url'].tolist()
+#     else:
+#         st.error("Failed to load data from GitHub.")
+#         return None
+
+cphi_parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.parquet"
 
 def cphi():        
-    df_cp = pd.concat([pd.read_csv(file, encoding='utf-8', sep=',', header=0) for file in load_github_files()])
+    df = pd.read_parquet(cphi_parquet)
+    df_cp = df[df["Month year"] != "Month year"]
     df_cp["Month year"] = pd.to_datetime(df_cp["Month year"]).dt.to_period('M')
 
     # create MaCH column with condition right 4 chartacters of cost center code if not null else right 4 characters of GL Account Code

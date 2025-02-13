@@ -77,9 +77,9 @@ if plant_code == ['Select All']:
     sum_fm_vm07 = data_vm[data_vm["Month year"].dt.year.isin(year)]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp: {sum_fm_vm07:.2f} tỉ')
     
-    # # sum of cphi
-    # sum_fm_cp = data_cp[data_cp["Month year"] == year]["FM. Loc Amt"].sum() / 1e9
-    # st.write(f'Chi Phí: {sum_fm_cp:.2f} tỉ')
+    # sum of cphi
+    sum_fm_cp = data_cp[data_cp["Month year"].dt.year.isin(year)]["FM. Loc Amt"].sum() / 1e9
+    st.write(f'Chi Phí: {sum_fm_cp:.2f} tỉ')
 else:
     # sum of FM 01_Invoices Revenue
     sum_fm_tsv01 = data_tsv[(data_tsv["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
