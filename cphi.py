@@ -28,6 +28,7 @@ def cphi():
     df_cp["MaCH"] = df_cp["Cost Center Code"].fillna(df_cp["Plant Code"].astype('str')).astype('int').astype('str').str[-4:] \
         .replace('0000', 'P015').replace('9999', 'P015')
 
+    df_cp["FM. Loc Amt"] = df_cp["FM. Loc Amt"].astype('float')
 
     cols = ["Month year", "GL Account Code", "GL LV1 Name", "FM. Loc Amt", "PnL Name", "MaCH"]
     gl_code_exl = 64110120 # list of GL Account Code
