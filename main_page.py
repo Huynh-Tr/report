@@ -52,7 +52,7 @@ plant_code = col1.multiselect('Select plant code:', plant_code, default='Select 
 
 # multi selection year
 year = data_tsv["Month year"].dt.year.unique()
-year = int(col3.multiselect('Select year:', year, default=year[-1]))
+year = col3.multiselect('Select year:', year, default=year[-1])
 
 # # multi selection month year
 # month_year = data_tsv["Month year"].unique()
