@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def load_github_files():
-    url = 'https://api.github.com/repos/Huynh-Tr/report/contents/Cphi'
+    url = 'https://api.github.com/repos/Huynh-Tr/report/contents/CP'
     response = requests.get(url)
     if response.status_code == 200:
         files = pd.DataFrame(response.json())
