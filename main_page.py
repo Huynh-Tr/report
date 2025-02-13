@@ -27,9 +27,14 @@ st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 # starttime
 start = time.time()
 
+# dthu_parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\output.parquet"
+# df = pd.read_parquet(dthu_parquet).dropna()
+# st.write(df)
+
 # load data
 data_tsv, data_vm = dthu.dthu()
-data_cp = cphi.cphi()
+# data_cp = cphi.cphi()
+
 
 st.html('''
 <style>
@@ -59,17 +64,17 @@ year = col3.multiselect('Select year:', year, default=year[-1])
 # month_year = col2.multiselect('Select month year:', month_year, default=month_year)
 
 if plant_code == ['Select All']:
-    sum_fm_tsv01 = data_tsv[data_tsv["Month year"].dt.year == year]["FM 01_Invoices Revenue"].sum() / 1e9
+    sum_fm_tsv01 = data_tsv[data_tsv["Month year"].dt.year.isin(year)]["FM 01_Invoices Revenue"].astype('float').sum() / 1e9
     st.write(f'Doanh Thu TSV: {sum_fm_tsv01:.2f} tỉ')
 
-    sum_fm_vm01 = data_vm[data_vm["Month year"].dt.year == year]["FM 01_Invoices Revenue"].sum() / 1e9
+    sum_fm_vm01 = data_vm[data_vm["Month year"].dt.year.isin(year)]["FM 01_Invoices Revenue"].sum() / 1e9
     st.write(f'Doanh Thu VM: {sum_fm_vm01:.2f} tỉ')
 
     # sum of FM 07_Gross Profit
-    sum_fm_tsv07 = data_tsv[data_tsv["Month year"].dt.year == year]["FM 07_Gross Profit"].sum() / 1e9
+    sum_fm_tsv07 = data_tsv[data_tsv["Month year"].dt.year.isin(year)]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp: {sum_fm_tsv07:.2f} tỉ')
 
-    sum_fm_vm07 = data_vm[data_vm["Month year"].dt.year == year]["FM 07_Gross Profit"].sum() / 1e9
+    sum_fm_vm07 = data_vm[data_vm["Month year"].dt.year.isin(year)]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp: {sum_fm_vm07:.2f} tỉ')
     
     # # sum of cphi
@@ -77,18 +82,18 @@ if plant_code == ['Select All']:
     # st.write(f'Chi Phí: {sum_fm_cp:.2f} tỉ')
 else:
     # sum of FM 01_Invoices Revenue
-    sum_fm_tsv01 = data_tsv[(data_tsv["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.year == year)]["FM 01_Invoices Revenue"].sum() / 1e9
+    sum_fm_tsv01 = data_tsv[(data_tsv["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
     st.write(f'Doanh Thu TSV: {sum_fm_tsv01:.2f} tỉ')
 
-    sum_fm_vm01 = data_vm[(data_vm["Plant Code"].isin(plant_code)) & (data_vm["Month year"].dt.year == year)]["FM 01_Invoices Revenue"].sum() / 1e9
+    sum_fm_vm01 = data_vm[(data_vm["Plant Code"].isin(plant_code)) & (data_vm["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
     st.write(f'Doanh Thu VM: {sum_fm_vm01:.2f} tỉ')
 
 
     # sum of FM 07_Gross Profit
-    sum_fm_tsv07 = data_tsv[(data_tsv["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.year == year)]["FM 07_Gross Profit"].sum() / 1e9
+    sum_fm_tsv07 = data_tsv[(data_tsv["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.year.isin(year))]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp TSV: {sum_fm_tsv07:.2f} tỉ')
 
-    sum_fm_vm07 = data_vm[(data_vm["Plant Code"].isin(plant_code)) & (data_vm["Month year"].dt.year == year)]["FM 07_Gross Profit"].sum() / 1e9
+    sum_fm_vm07 = data_vm[(data_vm["Plant Code"].isin(plant_code)) & (data_vm["Month year"].dt.year.isin(year))]["FM 07_Gross Profit"].sum() / 1e9
     st.write(f'Lãi Gộp VM: {sum_fm_vm07:.2f} tỉ')
 
 result = pd.DataFrame(
