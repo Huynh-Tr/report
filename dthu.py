@@ -1,13 +1,26 @@
 import pandas as pd 
 from glob import glob
 import os
+import requests
 
 import warnings
 warnings.filterwarnings("ignore")
 
+def load_github_files():
+    url = 'https://api.github.com/repos/Huynh-Tr/report/contents/Dthu'
+    response = requests.get(url)
+    if response.status_code == 200:
+        files = pd.DataFrame(response.json())
+        files['name'] = files['name'].str.replace('.csv', '')
+        return files['download_url'].tolist()
+    else:
+        st.error("Failed to load data from GitHub.")
+        return None
+        
 def dthu():
-    path = "D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
-    files_Dthu = glob(os.path.join(path, "Dthu\\*.csv"))
+    # path = "D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
+    # files_Dthu = glob(os.path.join(path, "Dthu\\*.csv"))
+    files_Dthu = load_github_files()
 
     df = pd.concat([pd.read_csv(file, encoding='utf-8', sep=',', header=0) for file in files_Dthu])
     df["Month year"] = pd.to_datetime(df["Month year"]).dt.strftime('%m-%Y')

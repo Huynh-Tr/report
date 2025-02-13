@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from glob import glob
 import os
+import time
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -21,6 +22,9 @@ st.divider()
 
 st.header('Welcome to the main page!')
 st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
+
+# starttime
+start = time.time()
 
 # load data
 data_tsv, data_vm = dthu.dthu()
@@ -118,5 +122,10 @@ styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['Thực Hiện',
 # Display the styled DataFrame
 st.write(styled_df.to_html(), unsafe_allow_html=True)
 
+# endtime
+end = time.time()
+# convert runtime
+run_time = time.gmtime(end - start)
+st.write("Run time: ", time.strftime("%M:%S", run_time))
 
 
