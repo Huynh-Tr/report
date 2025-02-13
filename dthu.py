@@ -11,7 +11,7 @@ def load_github_files():
     response = requests.get(url)
     if response.status_code == 200:
         files = pd.DataFrame(response.json())
-        files['name'] = files['name'].str.replace('.csv', '')
+        files['name'] = files['name'].str.replace('.parquet', '')
         return files['download_url'].tolist()
     else:
         st.error("Failed to load data from GitHub.")
