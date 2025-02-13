@@ -33,7 +33,7 @@ start = time.time()
 
 # load data
 data_tsv, data_vm = dthu.dthu()
-# data_cp = cphi.cphi()
+data_cp = cphi.cphi()
 
 
 st.html('''
