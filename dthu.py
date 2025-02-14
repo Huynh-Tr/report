@@ -36,7 +36,7 @@ def dthu():
 def chitieu(year, month=1, plant_code='Select All'):    
     data_tsv, data_vm = dthu()
     if plant_code == 'Select All':
-        sum_fm_tsv01 = data_tsv[(data_tsv["Month year"].dt.month.isin(month)) | (data_tsv["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
+        sum_fm_tsv01 = data_tsv[(data_tsv["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
         sum_fm_vm01 = data_vm[(data_tsv["Month year"].dt.month.isin(month)) & (data_vm["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
         sum_fm_tsv07 = data_tsv[(data_tsv["Month year"].dt.month.isin(month)) & (data_tsv["Month year"].dt.year.isin(year))]["FM 07_Gross Profit"].sum() / 1e9
         sum_fm_vm07 = data_vm[(data_tsv["Month year"].dt.month.isin(month)) & (data_vm["Month year"].dt.year.isin(year))]["FM 07_Gross Profit"].sum() / 1e9
