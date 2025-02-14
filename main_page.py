@@ -79,7 +79,7 @@ st.write(plant_code, year, month)
 
 if plant_code == ['Select All']:
 #     # chi tieu dthu lg
-    sum_fm_tsv01, sum_fm_vm01, sum_fm_tsv07, sum_fm_vm07  = chitieu(year, month, plant_code)
+    sum_fm_tsv01, sum_fm_vm01, sum_fm_tsv07, sum_fm_vm07  = dthu.chitieu(year, month, plant_code)
     st.write(sum_fm_tsv01, sum_fm_vm01, sum_fm_tsv07, sum_fm_vm07)
 #     # chi tieu cphi
 #     # sum_fm_cp, sum_fm_cp_nv, sum_fm_cp_ccdc, sum_fm_cp_khtscd, sum_fm_cp_vlp, sum_fm_cp_cl = cphi.chitieu(year, month, plant_code)

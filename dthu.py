@@ -32,3 +32,18 @@ def dthu():
     df_vm = df_vm[col]
 
     return df_tsv, df_vm
+
+def chitieu(year, month=1, plant_code='Select All'):    
+    data_tsv, data_vm = dthu.dthu()
+    if plant_code == 'Select All':
+        sum_fm_tsv01 = data_tsv[(data_tsv["Month year"].dt.month.isin(month)) & (data_tsv["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
+        sum_fm_vm01 = data_vm[(data_tsv["Month year"].dt.month.isin(month)) & (data_vm["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
+        sum_fm_tsv07 = data_tsv[(data_tsv["Month year"].dt.month.isin(month)) & (data_tsv["Month year"].dt.year.isin(year))]["FM 07_Gross Profit"].sum() / 1e9
+        sum_fm_vm07 = data_vm[(data_tsv["Month year"].dt.month.isin(month)) & (data_vm["Month year"].dt.year.isin(year))]["FM 07_Gross Profit"].sum() / 1e9
+    else:
+        sum_fm_tsv01 = data_tsv[(data_tsv["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.month.isin(month)) & (data_tsv["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
+        sum_fm_vm01 = data_vm[(data_vm["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.month.isin(month)) & (data_vm["Month year"].dt.year.isin(year))]["FM 01_Invoices Revenue"].sum() / 1e9
+        sum_fm_tsv07 = data_tsv[(data_tsv["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.month.isin(month)) & (data_tsv["Month year"].dt.year.isin(year))]["FM 07_Gross Profit"].sum() / 1e9
+        sum_fm_vm07 = data_vm[(data_vm["Plant Code"].isin(plant_code)) & (data_tsv["Month year"].dt.month.isin(month)) & (data_vm["Month year"].dt.year.isin(year))]["FM 07_Gross Profit"].sum() / 1e9
+
+    return sum_fm_tsv01, sum_fm_vm01, sum_fm_tsv07, sum_fm_vm07     
