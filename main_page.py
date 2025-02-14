@@ -33,6 +33,8 @@ if st.button('Clear cache'):
     st.cache_data.clear()
 
 
+data_tsv, data_vm = dthu.dthu()
+
 def chitieu(year, month=1, plant_code='Select All'):    
     data_tsv, data_vm = dthu.dthu()
     if plant_code == 'Select All':
@@ -61,18 +63,21 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 col1, col2, col3, col4, col5 = st.columns(5)
 
 # multi selection plant code
-plant_code = [1277, 1617]
+# plant_code = [1277, 1617]
+plant_code = data_tsv["Plant Code"].unique().tolist()
 
 # add select all to the list
 plant_code = ['Select All'] + plant_code
 plant_code = col1.multiselect('Select plant code:', plant_code, default='Select All')
 
 # multi selection year
-year = list(range(2021, 2026))
+# year = list(range(2021, 2026))
+year = data_tsv["Month year"].dt.year.unique().tolist()
 year = col2.multiselect('Select year:', year, default=year[-1])
 
 # multi selection month
-month = list(range(1, 13))
+# month = list(range(1, 13))
+month = data_tsv["Month year"].dt.month.unique().tolist()
 month = col3.multiselect('Select month:', month)
 
 st.write(plant_code, year, month)
