@@ -17,7 +17,8 @@ warnings.filterwarnings("ignore")
 #         st.error("Failed to load data from GitHub.")
 #         return None
 
-parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.parquet"
+# parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.parquet"
+parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\cphi.parquet"
 
 def cphi():        
     df = pd.read_parquet(parquet)

@@ -13,8 +13,11 @@ warnings.filterwarnings("ignore")
 import dthu
 import cphi
 import tkho
+import kqkd
 
 from helper import *
+
+# https://api.github.com/repos/Huynh-Tr/report/contents/
 
 # layout wide
 st.set_page_config(layout='wide')
@@ -54,8 +57,8 @@ plant_code = ['1277', '1617']
 # plant_code = data_tsv["Plant Code"].unique().tolist()
 
 # add select all to the list
-plant_code = ['Select All'] + plant_code
-plant_code = col1.multiselect('Select plant code:', plant_code, default='Select All')
+plant_code = ['All'] + plant_code
+plant_code = col1.multiselect('Select plant code:', plant_code)
 
 # multi selection year
 year = list(range(2021, 2026))
@@ -65,17 +68,20 @@ year = col2.multiselect('Select year:', year, default=year[-1])
 # multi selection month
 month = list(range(1, 13))
 # month = data_tsv["Month year"].dt.month.unique().tolist()
-month = col3.multiselect('Select month:', month)
+month = col3.multiselect('Select month:', month, default=month[-1])
 
-# st.write('Plant code:', plant_code)
-
-if plant_code == 'Select All':
+st.write('Plant code:', plant_code, 'Year:', year, 'Month:', month)
+if plant_code == 'All':
     # chi tieu dthu lg
-    result_dthu  = dthu.chitieu(year=year, month=month, plant_code='Select All')
+    st.write('Plant code:', plant_code)
+    result_dthu  = dthu.chitieu(year=year, month=month)
+    st.write('Result DThu:', result_dthu)
     # chi tieu cphi
-    result_cphi = cphi.chitieu(year=year, month=month, plant_code='Select All')
+    result_cphi = cphi.chitieu(year=year, month=month)
+    st.write('Result CPhi:', result_cphi)
     # chi tieu ton kho
-    result_tkho = tkho.chitieu(year=year, month=month, plant_code='Select All')
+    result_tkho = tkho.chitieu(year=year, month=month)
+    st.write('Result TKho:', result_tkho)
 
 else:
     # chi tieu dthu lg
@@ -85,7 +91,7 @@ else:
     # chi tieu ton kho
     result_tkho = tkho.chitieu(year=year, month=month, plant_code=plant_code)
 
-def kqkd():
+def kqkd(result_dthu, result_tkho, result_cphi):
     kqkd_th = result_dthu.iloc[3, 2] + result_tkho.iloc[0, 2] + result_cphi.iloc[0, 2]
     kqkd_ck = result_dthu.iloc[3, 3] + result_tkho.iloc[0, 3] + result_cphi.iloc[0, 3]
     kqkd_lk = result_dthu.iloc[3, 6] + result_tkho.iloc[0, 6] + result_cphi.iloc[0, 6]
@@ -114,28 +120,30 @@ def kqkd():
     )
     return result_kqkd
 
-result_kqkd = kqkd()
+# result_kqkd = kqkd(result_dthu, result_tkho, result_cphi)
+
 # concat dataframes
-df = pd.concat([result_dthu, result_cphi, result_tkho, result_kqkd], axis=0).reset_index(drop=True)
+# df = pd.concat([result_dthu, result_cphi, result_tkho], axis=0).reset_index(drop=True)
+#     # result_kqkd
 
-bold_rows_df = lambda x: ['font-weight: bold' if x.name in [0, 3, 6, 18, 21, 22, 23, 24] else '' for _ in x]
-italic_row_df = lambda x: ['font-style: italic' if x.name in list(range(9, 18)) else '' for _ in x]
+# bold_rows_df = lambda x: ['font-weight: bold' if x.name in [0, 3, 6, 18, 21, 22, 23, 24] else '' for _ in x]
+# italic_row_df = lambda x: ['font-style: italic' if x.name in list(range(9, 18)) else '' for _ in x]
 
-# Apply the styling function to the DataFrame bold_rows_df and italic_row_df
-styled_df = df.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
+# # Apply the styling function to the DataFrame bold_rows_df and italic_row_df
+# styled_df = df.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
 
-# Apply 2 decimal places format to the DataFrame with text formatted on the left side, set the number to right side, header to center
-styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', '  Kế Hoạch   ', \
-                                                                ' LK Thực Hiện', ' LK Cùng Kỳ  ', ' LK Kế Hoạch ', \
-                                                                'LK Thực Hiện ', '       KH Năm']]) \
-                    .set_properties(**{'text-align': 'right'}) \
-                    .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'text-align': 'left'}) \
-                    .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}])
+# # Apply 2 decimal places format to the DataFrame with text formatted on the left side, set the number to right side, header to center
+# styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', '  Kế Hoạch   ', \
+#                                                                 ' LK Thực Hiện', ' LK Cùng Kỳ  ', ' LK Kế Hoạch ', \
+#                                                                 'LK Thực Hiện ', '       KH Năm']]) \
+#                     .set_properties(**{'text-align': 'right'}) \
+#                     .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'text-align': 'left'}) \
+#                     .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}])
 
-# hide index of dataframe
-styled_df = styled_df.hide(axis='index')
+# # hide index of dataframe
+# styled_df = styled_df.hide(axis='index')
 
-st.write(styled_df.to_html(), unsafe_allow_html=True)
+# st.write(styled_df.to_html(), unsafe_allow_html=True)
 
 # endtime
 end = time.time()

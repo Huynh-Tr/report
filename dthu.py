@@ -8,7 +8,8 @@ import helper
 import warnings
 warnings.filterwarnings("ignore")
 
-parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/dthu.parquet"
+# parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/dthu.parquet"
+parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\dthu.parquet"
 
 def dthu():
     df = pd.read_parquet(parquet)
@@ -63,7 +64,7 @@ def chitieu(year, month, plant_code='Select All'):
         sum_fm_vm01, sum_fm_vm01_ck, sum_fm_vm01_lk, sum_fm_vm01_ck_lk = chitieu_theoky(df=data_vm, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)                  
         sum_fm_tsv07, sum_fm_tsv07_ck, sum_fm_tsv07_lk, sum_fm_tsv07_ck_lk = chitieu_theoky(df=data_tsv, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
         sum_fm_vm07, sum_fm_vm07_ck, sum_fm_vm07_lk, sum_fm_vm07_ck_lk = chitieu_theoky(df=data_vm, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
-
+    
     result_dthu = pd.DataFrame(
         {
         'Chỉ Tiêu': ['Doanh thu', 'TSV', 'VM', 'Lãi Gộp', 'TSV', 'VM'],
