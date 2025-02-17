@@ -38,79 +38,115 @@ def cphi():
 
     return df
 
+def chitieu_theoky(df, col_cp, col, year, month, plant_code):
+    if plant_code == 'Select All':
+        chitieu_th = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+        chitieu_ck = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+        chitieu_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+        chitieu_ck_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+
+    else:
+        chitieu_th = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+        chitieu_ck = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+        chitieu_lk = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+        chitieu_ck_lk = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+
+    return chitieu_th, chitieu_ck, chitieu_lk, chitieu_ck_lk
+
 def chitieu(year, month=1, plant_code='Select All'):
     data_cp = cphi()
     if plant_code == 'Select All':
-        # sum of cphi
-        sum_fm_cp = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month))]["FM. Loc Amt"].sum() / 1e9
-
         # cphi nhan vien
-        sum_fm_cp_nv = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP Nhân viên"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_nv, sum_fm_cp_nv_ck, sum_fm_cp_nv_lk, sum_fm_cp_nv_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP Nhân viên", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi CCDC
-        sum_fm_cp_ccdc = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP CCDC"))]["FM. Loc Amt"].sum() / 1e9
-
+        sum_fm_cp_ccdc, sum_fm_cp_ccdc_ck, sum_fm_cp_ccdc_lk, sum_fm_cp_ccdc_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP CCDC", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
+        
         # cphi kh tscd
-        sum_fm_cp_khtscd = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP KH TSCD"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_khtscd, sum_fm_cp_khtscd_ck, sum_fm_cp_khtscd_lk, sum_fm_cp_khtscd_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP KH TSCĐ", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi vat lieu phu
-        sum_fm_cp_vlp = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP vật liệu phụ"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_vlp, sum_fm_cp_vlp_ck, sum_fm_cp_vlp_lk, sum_fm_cp_vlp_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP vật liệu phụ", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi con lai
-        sum_fm_cp_cl = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP Còn lại"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_cl, sum_fm_cp_cl_ck, sum_fm_cp_cl_lk, sum_fm_cp_cl_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP Còn lại", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi thue ngoai
-        sum_fm_cp_tn = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP Thuê ngoài"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_tn, sum_fm_cp_tn_ck, sum_fm_cp_tn_lk, sum_fm_cp_tn_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP Thuê ngoài", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi hanh chinh
-        sum_fm_cp_hc = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP hành chính"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_hc, sum_fm_cp_hc_ck, sum_fm_cp_hc_lk, sum_fm_cp_hc_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP hành chính", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi chuyen tien
-        sum_fm_cp_ct = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP chuyển tiền"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_ct, sum_fm_cp_ct_ck, sum_fm_cp_ct_lk, sum_fm_cp_ct_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP chuyển tiền", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi marketing & khuyen mai
-        sum_fm_cp_mk = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP Marketing & Khuyến mãi"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_mk, sum_fm_cp_mk_ck, sum_fm_cp_mk_lk, sum_fm_cp_mk_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP Marketing & Khuyến mãi", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi sua chua, bao tri
-        sum_fm_cp_scbt = data_cp[(data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP sửa chữa, bảo trì"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_scbt, sum_fm_cp_scbt_ck, sum_fm_cp_scbt_lk, sum_fm_cp_scbt_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP sửa chữa, bảo trì", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
     
-        # sum of cphi ngoai luong
-        sum_fm_cp_nl = sum_fm_cp - sum_fm_cp_nv
     else:
-            # sum of cphi
-        sum_fm_cp = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month))]["FM. Loc Amt"].sum() / 1e9
-
         # cphi nhan vien
-        sum_fm_cp_nv = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP Nhân viên"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_nv, sum_fm_cp_nv_ck, sum_fm_cp_nv_lk, sum_fm_cp_nv_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP Nhân viên", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi CCDC
-        sum_fm_cp_ccdc = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP CCDC"))]["FM. Loc Amt"].sum() / 1e9
-
+        sum_fm_cp_ccdc, sum_fm_cp_ccdc_ck, sum_fm_cp_ccdc_lk, sum_fm_cp_ccdc_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP CCDC", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
+        
         # cphi kh tscd
-        sum_fm_cp_khtscd = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP KH TSCD"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_khtscd, sum_fm_cp_khtscd_ck, sum_fm_cp_khtscd_lk, sum_fm_cp_khtscd_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP KH TSCD", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi vat lieu phu
-        sum_fm_cp_vlp = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP vật liệu phụ"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_vlp, sum_fm_cp_vlp_ck, sum_fm_cp_vlp_lk, sum_fm_cp_vlp_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP vật liệu phụ", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi con lai
-        sum_fm_cp_cl = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP Còn lại"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_cl, sum_fm_cp_cl_ck, sum_fm_cp_cl_lk, sum_fm_cp_cl_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP Còn lại", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi thue ngoai
-        sum_fm_cp_tn = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP Thuê ngoài"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_tn, sum_fm_cp_tn_ck, sum_fm_cp_tn_lk, sum_fm_cp_tn_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP Thuê ngoài", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi hanh chinh
-        sum_fm_cp_hc = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP hành chính"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_hc, sum_fm_cp_hc_ck, sum_fm_cp_hc_lk, sum_fm_cp_hc_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP hành chính", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi chuyen tien
-        sum_fm_cp_ct = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP chuyển tiền"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_ct, sum_fm_cp_ct_ck, sum_fm_cp_ct_lk, sum_fm_cp_ct_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP chuyển tiền", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi marketing & khuyen mai
-        sum_fm_cp_mk = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP Marketing & Khuyến mãi"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_mk, sum_fm_cp_mk_ck, sum_fm_cp_mk_lk, sum_fm_cp_mk_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP Marketing & Khuyến mãi", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
         # cphi sua chua, bao tri
-        sum_fm_cp_scbt = data_cp[(data_cp["Plant Code"].isin(plant_code)) & (data_cp["Month year"].dt.year.isin(year)) & (data_cp["Month year"].dt.month.isin(month)) & (data_cp["GL LV1 Name"].str.contains("CP sửa chữa, bảo trì"))]["FM. Loc Amt"].sum() / 1e9
+        sum_fm_cp_scbt, sum_fm_cp_scbt_ck, sum_fm_cp_scbt_lk, sum_fm_cp_scbt_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP sửa chữa, bảo trì", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
     
-        # sum of cphi ngoai luong
-        sum_fm_cp_nl = sum_fm_cp - sum_fm_cp_nv / 1e9
 
-    return sum_fm_cp, sum_fm_cp_nv, sum_fm_cp_ccdc, sum_fm_cp_khtscd, sum_fm_cp_vlp, sum_fm_cp_cl, sum_fm_cp_tn, sum_fm_cp_hc, sum_fm_cp_ct, sum_fm_cp_mk, sum_fm_cp_scbt, sum_fm_cp_nl
+    # sum of cphi ngoai luong
+    sum_fm_cp_nl = sum_fm_cp_ccdc + sum_fm_cp_khtscd + sum_fm_cp_vlp + sum_fm_cp_cl + sum_fm_cp_tn + sum_fm_cp_hc + sum_fm_cp_ct + sum_fm_cp_mk + sum_fm_cp_scbt
+    sum_fm_cp_nl_ck = sum_fm_cp_ccdc_ck + sum_fm_cp_khtscd_ck + sum_fm_cp_vlp_ck + sum_fm_cp_cl_ck + sum_fm_cp_tn_ck + sum_fm_cp_hc_ck + sum_fm_cp_ct_ck + sum_fm_cp_mk_ck + sum_fm_cp_scbt_ck
+    sum_fm_cp_nl_lk = sum_fm_cp_ccdc_lk + sum_fm_cp_khtscd_lk + sum_fm_cp_vlp_lk + sum_fm_cp_cl_lk + sum_fm_cp_tn_lk + sum_fm_cp_hc_lk + sum_fm_cp_ct_lk + sum_fm_cp_mk_lk + sum_fm_cp_scbt_lk
+    sum_fm_cp_nl_ck_lk = sum_fm_cp_ccdc_ck_lk + sum_fm_cp_khtscd_ck_lk + sum_fm_cp_vlp_ck_lk + sum_fm_cp_cl_ck_lk + sum_fm_cp_tn_ck_lk + sum_fm_cp_hc_ck_lk + sum_fm_cp_ct_ck_lk + sum_fm_cp_mk_ck_lk + sum_fm_cp_scbt_ck_lk
+
+    # sum of cphi
+    sum_fm_cp = sum_fm_cp_nv + sum_fm_cp_ccdc + sum_fm_cp_khtscd + sum_fm_cp_vlp + sum_fm_cp_cl + sum_fm_cp_tn + sum_fm_cp_hc + sum_fm_cp_ct + sum_fm_cp_mk + sum_fm_cp_scbt
+    sum_fm_cp_ck = sum_fm_cp_nv_ck + sum_fm_cp_ccdc_ck + sum_fm_cp_khtscd_ck + sum_fm_cp_vlp_ck + sum_fm_cp_cl_ck + sum_fm_cp_tn_ck + sum_fm_cp_hc_ck + sum_fm_cp_ct_ck + sum_fm_cp_mk_ck + sum_fm_cp_scbt_ck
+    sum_fm_cp_lk = sum_fm_cp_nv_lk + sum_fm_cp_ccdc_lk + sum_fm_cp_khtscd_lk + sum_fm_cp_vlp_lk + sum_fm_cp_cl_lk + sum_fm_cp_tn_lk + sum_fm_cp_hc_lk + sum_fm_cp_ct_lk + sum_fm_cp_mk_lk + sum_fm_cp_scbt_lk
+    sum_fm_cp_ck_lk = sum_fm_cp_nv_ck_lk + sum_fm_cp_ccdc_ck_lk + sum_fm_cp_khtscd_ck_lk + sum_fm_cp_vlp_ck_lk + sum_fm_cp_cl_ck_lk + sum_fm_cp_tn_ck_lk + sum_fm_cp_hc_ck_lk + sum_fm_cp_ct_ck_lk + sum_fm_cp_mk_ck_lk + sum_fm_cp_scbt_ck_lk
+
+    # dataframe cphi
+    result_cphi = pd.DataFrame(
+        {
+            "Chỉ Tiêu": ["Chi Phí Vận Hành", "Chi Phí Nhân Viên", "Chi Phí Ngoài Lương", 'CP CCDC', 'CP KH TSCĐ', 'CP vật liệu phụ',
+        'CP Còn lại', 'CP Thuê ngoài', 'CP hành chính', 'CP chuyển tiền', 'CP Marketing & Khuyến mãi', 'CP sửa chữa, bảo trì'],
+            '': ['' for i in range(12)],
+            '  Thực Hiện  ': [sum_fm_cp, sum_fm_cp_nv, sum_fm_cp_nl, sum_fm_cp_ccdc, sum_fm_cp_khtscd, sum_fm_cp_vlp, sum_fm_cp_cl, sum_fm_cp_tn, sum_fm_cp_hc, sum_fm_cp_ct, sum_fm_cp_mk, sum_fm_cp_scbt],
+            '  Cùng Kỳ    ': [sum_fm_cp_ck, sum_fm_cp_nv_ck, sum_fm_cp_nl_ck, sum_fm_cp_ccdc_ck, sum_fm_cp_khtscd_ck, sum_fm_cp_vlp_ck, sum_fm_cp_cl_ck, sum_fm_cp_tn_ck, sum_fm_cp_hc_ck, sum_fm_cp_ct_ck, sum_fm_cp_mk_ck, sum_fm_cp_scbt_ck],
+            '  Kế Hoạch   ': [sum_fm_cp, sum_fm_cp_nv, sum_fm_cp_nl, sum_fm_cp_ccdc, sum_fm_cp_khtscd, sum_fm_cp_vlp, sum_fm_cp_cl, sum_fm_cp_tn, sum_fm_cp_hc, sum_fm_cp_ct, sum_fm_cp_mk, sum_fm_cp_scbt],
+            ' ': ['' for i in range(12)],
+            ' LK Thực Hiện': [sum_fm_cp_lk, sum_fm_cp_nv_lk, sum_fm_cp_nl_lk, sum_fm_cp_ccdc_lk, sum_fm_cp_khtscd_lk, sum_fm_cp_vlp_lk, sum_fm_cp_cl_lk, sum_fm_cp_tn_lk, sum_fm_cp_hc_lk, sum_fm_cp_ct_lk, sum_fm_cp_mk_lk, sum_fm_cp_scbt_lk],
+            ' LK Cùng Kỳ  ': [sum_fm_cp_ck_lk, sum_fm_cp_nv_ck_lk, sum_fm_cp_nl_ck_lk, sum_fm_cp_ccdc_ck_lk, sum_fm_cp_khtscd_ck_lk, sum_fm_cp_vlp_ck_lk, sum_fm_cp_cl_ck_lk, sum_fm_cp_tn_ck_lk, sum_fm_cp_hc_ck_lk, sum_fm_cp_ct_ck_lk, sum_fm_cp_mk_ck_lk, sum_fm_cp_scbt_ck_lk],
+            ' LK Kế Hoạch ': [sum_fm_cp, sum_fm_cp_nv, sum_fm_cp_nl, sum_fm_cp_ccdc, sum_fm_cp_khtscd, sum_fm_cp_vlp, sum_fm_cp_cl, sum_fm_cp_tn, sum_fm_cp_hc, sum_fm_cp_ct, sum_fm_cp_mk, sum_fm_cp_scbt],
+            '  ': ['' for i in range(12)],
+            'LK Thực Hiện ': [sum_fm_cp_lk, sum_fm_cp_nv_lk, sum_fm_cp_nl_lk, sum_fm_cp_ccdc_lk, sum_fm_cp_khtscd_lk, sum_fm_cp_vlp_lk, sum_fm_cp_cl_lk, sum_fm_cp_tn_lk, sum_fm_cp_hc_lk, sum_fm_cp_ct_lk, sum_fm_cp_mk_lk, sum_fm_cp_scbt_lk],
+            '       KH Năm': [sum_fm_cp, sum_fm_cp_nv, sum_fm_cp_nl, sum_fm_cp_ccdc, sum_fm_cp_khtscd, sum_fm_cp_vlp, sum_fm_cp_cl, sum_fm_cp_tn, sum_fm_cp_hc, sum_fm_cp_ct, sum_fm_cp_mk, sum_fm_cp_scbt]
+        }
+    )
+
+    return result_cphi
