@@ -79,7 +79,7 @@ if plant_code==['Select All']:
     # chi tieu ton kho
     result_tkho = tkho.chitieu(year=year, month=month, plant_code='Select All')
     # ke hoach
-    result_kh = kh.result_kh(year=year, month=month, plant_code='Select All').set_index('Chỉ Tiêu')
+    # result_kh = kh.result_kh(year=year, month=month, plant_code='Select All').set_index('Chỉ Tiêu')
 
 else:
     # chi tieu dthu lg
@@ -89,7 +89,7 @@ else:
     # chi tieu ton kho
     result_tkho = tkho.chitieu(year=year, month=month, plant_code=plant_code)
     # ke hoach
-    result_kh = kh.result_kh(year=year, month=month, plant_code=plant_code).set_index('Chỉ Tiêu')
+    # result_kh = kh.result_kh(year=year, month=month, plant_code=plant_code).set_index('Chỉ Tiêu')
 
 
 # st.write('Result DThu:', result_dthu)
@@ -130,13 +130,13 @@ df = pd.concat([result_dthu, result_cphi, result_tkho, result_kqkd], axis=0).set
     # result_kqkd
 
 # concat kh
-df = pd.concat([df, result_kh], axis=1)
+# df = pd.concat([df, result_kh], axis=1)
 # .reset_index(drop=True)
 # df = df.merge(result_kh, left_index=True, right_index=True)
 # st.write('Result DThu:', kh.get_chitieu(df, "Doanh Thu", "TSV", thang=month, nam=year, plant_code='Select All'))
 
-st.write(df)
-# st.write(kh.result_kh(year=year, month=month, plant_code='Select All'))
+# st.write(df)
+st.write(kh.result_kh(year=year, month=month, plant_code='Select All'))
 
 # bold_rows_df = lambda x: ['font-weight: bold' if x.name in [0, 3, 6, 18, 21, 22, 23, 24] else '' for _ in x]
 # italic_row_df = lambda x: ['font-style: italic' if x.name in list(range(9, 18)) else '' for _ in x]
