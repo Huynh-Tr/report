@@ -17,14 +17,11 @@ def kqkd(result_dthu, result_tkho, result_cphi):
             '': ['', '', '', ''],
             '  Thực Hiện  ': [kqkd_th, kqkd_ex_vm_th, kqkd_th * 0.8, kqkd_ex_vm_th * 0.8],
             '  Cùng Kỳ    ': [kqkd_ck, kqkd_ex_vm_ck, kqkd_ck * 0.8, kqkd_ex_vm_ck * 0.8],
-            '  Kế Hoạch   ': [0 , 0, 0, 0],
             ' ': ['', '', '', ''],
             ' LK Thực Hiện': [kqkd_lk, kqkd_ex_vm_lk, kqkd_lk * 0.8, kqkd_ex_vm_lk * 0.8],
             ' LK Cùng Kỳ  ': [kqkd_ck_lk, kqkd_ex_vm_ck_lk, kqkd_ck_lk * 0.8, kqkd_ex_vm_ck_lk * 0.8],
-            ' LK Kế Hoạch ': [0, 0, 0, 0],
             '  ': ['', '', '', ''],
             'LK Thực Hiện ': [kqkd_lk, kqkd_ex_vm_lk, kqkd_lk * 0.8, kqkd_ex_vm_lk * 0.8],
-            '       KH Năm': [0 , 0, 0, 0]
         }
     )
     return result_kqkd

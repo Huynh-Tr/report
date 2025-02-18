@@ -51,21 +51,21 @@ def chitieu_theoky(df, col, year, month, plant_code):
 
 def chitieu(year, month, plant_code='Select All'):
     df_tk_tsv, df_tk_vm = tkho()
-    if plant_code == 'Select All':
-        # chi phi von
-        sum_cpv_tsv, sum_cpv_tsv_ck, sum_cpv_tsv_lk, sum_cpv_tsv_ck_lk = chitieu_theoky(df=df_tk_tsv, col="FM 10_Inventory Cost", year=year, month=month, plant_code=plant_code)
-        sum_cpv_vm, sum_cpv_vm_ck, sum_cpv_vm_lk, sum_cpv_vm_ck_lk = chitieu_theoky(df=df_tk_vm, col="FM 10_Inventory Cost", year=year, month=month, plant_code=plant_code)
-        # ton von
-        sum_tv_tsv, sum_tv_tsv_ck, sum_tv_tsv_lk, sum_tv_tsv_ck_lk = chitieu_theoky(df=df_tk_tsv, col="MM.Avg Inventory Amt (Adjust)", year=year, month=month, plant_code=plant_code)
-        sum_tv_vm, sum_tv_vm_ck, sum_tv_vm_lk, sum_tv_vm_ck_lk = chitieu_theoky(df=df_tk_vm, col="MM.Avg Inventory Amt (Adjust)", year=year, month=month, plant_code=plant_code)
+    # if plant_code == 'Select All':
+    #     # chi phi von
+    #     sum_cpv_tsv, sum_cpv_tsv_ck, sum_cpv_tsv_lk, sum_cpv_tsv_ck_lk = chitieu_theoky(df=df_tk_tsv, col="FM 10_Inventory Cost", year=year, month=month, plant_code=plant_code)
+    #     sum_cpv_vm, sum_cpv_vm_ck, sum_cpv_vm_lk, sum_cpv_vm_ck_lk = chitieu_theoky(df=df_tk_vm, col="FM 10_Inventory Cost", year=year, month=month, plant_code=plant_code)
+    #     # ton von
+    #     sum_tv_tsv, sum_tv_tsv_ck, sum_tv_tsv_lk, sum_tv_tsv_ck_lk = chitieu_theoky(df=df_tk_tsv, col="MM.Avg Inventory Amt (Adjust)", year=year, month=month, plant_code=plant_code)
+    #     sum_tv_vm, sum_tv_vm_ck, sum_tv_vm_lk, sum_tv_vm_ck_lk = chitieu_theoky(df=df_tk_vm, col="MM.Avg Inventory Amt (Adjust)", year=year, month=month, plant_code=plant_code)
 
-    else:
+    # else:
         # chi phi von
-        sum_cpv_tsv, sum_cpv_tsv_ck, sum_cpv_tsv_lk, sum_cpv_tsv_ck_lk = chitieu_theoky(df=df_tk_tsv, col="FM 10_Inventory Cost", year=year, month=month, plant_code=plant_code)
-        sum_cpv_vm, sum_cpv_vm_ck, sum_cpv_vm_lk, sum_cpv_vm_ck_lk = chitieu_theoky(df=df_tk_vm, col="FM 10_Inventory Cost", year=year, month=month, plant_code=plant_code)
-        # ton von
-        sum_tv_tsv, sum_tv_tsv_ck, sum_tv_tsv_lk, sum_tv_tsv_ck_lk = chitieu_theoky(df=df_tk_tsv, col="MM.Avg Inventory Amt (Adjust)", year=year, month=month, plant_code=plant_code)
-        sum_tv_vm, sum_tv_vm_ck, sum_tv_vm_lk, sum_tv_vm_ck_lk = chitieu_theoky(df=df_tk_vm, col="MM.Avg Inventory Amt (Adjust)", year=year, month=month, plant_code=plant_code)
+    sum_cpv_tsv, sum_cpv_tsv_ck, sum_cpv_tsv_lk, sum_cpv_tsv_ck_lk = chitieu_theoky(df=df_tk_tsv, col="FM 10_Inventory Cost", year=year, month=month, plant_code=plant_code)
+    sum_cpv_vm, sum_cpv_vm_ck, sum_cpv_vm_lk, sum_cpv_vm_ck_lk = chitieu_theoky(df=df_tk_vm, col="FM 10_Inventory Cost", year=year, month=month, plant_code=plant_code)
+    # ton von
+    sum_tv_tsv, sum_tv_tsv_ck, sum_tv_tsv_lk, sum_tv_tsv_ck_lk = chitieu_theoky(df=df_tk_tsv, col="MM.Avg Inventory Amt (Adjust)", year=year, month=month, plant_code=plant_code)
+    sum_tv_vm, sum_tv_vm_ck, sum_tv_vm_lk, sum_tv_vm_ck_lk = chitieu_theoky(df=df_tk_vm, col="MM.Avg Inventory Amt (Adjust)", year=year, month=month, plant_code=plant_code)
 
     result_tkho = pd.DataFrame(
         {
@@ -73,14 +73,11 @@ def chitieu(year, month, plant_code='Select All'):
         '': ['', '', ''],
         '  Thực Hiện  ': [sum_cpv_tsv + sum_cpv_vm, sum_cpv_tsv, sum_cpv_vm],
         '  Cùng Kỳ    ': [sum_cpv_tsv_ck + sum_cpv_vm_ck, sum_cpv_tsv_ck, sum_cpv_vm_ck],
-        '  Kế Hoạch   ': [sum_cpv_tsv + sum_cpv_vm, sum_cpv_tsv, sum_cpv_vm],
         ' ': ['', '', ''],
         ' LK Thực Hiện': [sum_cpv_tsv_lk + sum_cpv_vm_lk, sum_cpv_tsv_lk, sum_cpv_vm_lk],
         ' LK Cùng Kỳ  ': [sum_cpv_tsv_ck_lk + sum_cpv_vm_ck_lk, sum_cpv_tsv_ck_lk, sum_cpv_vm_ck_lk],
-        ' LK Kế Hoạch ': [sum_cpv_tsv + sum_cpv_vm, sum_cpv_tsv, sum_cpv_vm],
         '  ': ['', '', ''],
         'LK Thực Hiện ': [sum_cpv_tsv_lk + sum_cpv_vm_lk, sum_cpv_tsv_lk, sum_cpv_vm_lk],
-        '       KH Năm': [sum_cpv_tsv + sum_cpv_vm, sum_cpv_tsv, sum_cpv_vm]
         }
     )
 

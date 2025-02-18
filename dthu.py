@@ -8,8 +8,8 @@ import helper
 import warnings
 warnings.filterwarnings("ignore")
 
-# parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/dthu.parquet"
-parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\dthu.parquet"
+parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/dthu.parquet"
+# parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\dthu.parquet"
 
 def dthu():
     df = pd.read_parquet(parquet)
@@ -53,17 +53,17 @@ def chitieu_theoky(df, col, year, month, plant_code):
 
 def chitieu(year, month, plant_code='Select All'):    
     data_tsv, data_vm = dthu()
-    if plant_code == 'Select All':
-        sum_fm_tsv01, sum_fm_tsv01_ck, sum_fm_tsv01_lk, sum_fm_tsv01_ck_lk = chitieu_theoky(df=data_tsv, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)
-        sum_fm_vm01, sum_fm_vm01_ck, sum_fm_vm01_lk, sum_fm_vm01_ck_lk = chitieu_theoky(df=data_vm, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)                  
-        sum_fm_tsv07, sum_fm_tsv07_ck, sum_fm_tsv07_lk, sum_fm_tsv07_ck_lk = chitieu_theoky(df=data_tsv, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
-        sum_fm_vm07, sum_fm_vm07_ck, sum_fm_vm07_lk, sum_fm_vm07_ck_lk = chitieu_theoky(df=data_vm, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
+    # if plant_code == 'Select All':
+    #     sum_fm_tsv01, sum_fm_tsv01_ck, sum_fm_tsv01_lk, sum_fm_tsv01_ck_lk = chitieu_theoky(df=data_tsv, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)
+    #     sum_fm_vm01, sum_fm_vm01_ck, sum_fm_vm01_lk, sum_fm_vm01_ck_lk = chitieu_theoky(df=data_vm, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)                  
+    #     sum_fm_tsv07, sum_fm_tsv07_ck, sum_fm_tsv07_lk, sum_fm_tsv07_ck_lk = chitieu_theoky(df=data_tsv, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
+    #     sum_fm_vm07, sum_fm_vm07_ck, sum_fm_vm07_lk, sum_fm_vm07_ck_lk = chitieu_theoky(df=data_vm, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
 
-    else:
-        sum_fm_tsv01, sum_fm_tsv01_ck, sum_fm_tsv01_lk, sum_fm_tsv01_ck_lk = chitieu_theoky(df=data_tsv, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)
-        sum_fm_vm01, sum_fm_vm01_ck, sum_fm_vm01_lk, sum_fm_vm01_ck_lk = chitieu_theoky(df=data_vm, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)                  
-        sum_fm_tsv07, sum_fm_tsv07_ck, sum_fm_tsv07_lk, sum_fm_tsv07_ck_lk = chitieu_theoky(df=data_tsv, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
-        sum_fm_vm07, sum_fm_vm07_ck, sum_fm_vm07_lk, sum_fm_vm07_ck_lk = chitieu_theoky(df=data_vm, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
+    # else:
+    sum_fm_tsv01, sum_fm_tsv01_ck, sum_fm_tsv01_lk, sum_fm_tsv01_ck_lk = chitieu_theoky(df=data_tsv, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)
+    sum_fm_vm01, sum_fm_vm01_ck, sum_fm_vm01_lk, sum_fm_vm01_ck_lk = chitieu_theoky(df=data_vm, col="FM 01_Invoices Revenue", year=year, month=month, plant_code=plant_code)                  
+    sum_fm_tsv07, sum_fm_tsv07_ck, sum_fm_tsv07_lk, sum_fm_tsv07_ck_lk = chitieu_theoky(df=data_tsv, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
+    sum_fm_vm07, sum_fm_vm07_ck, sum_fm_vm07_lk, sum_fm_vm07_ck_lk = chitieu_theoky(df=data_vm, col="FM 07_Gross Profit", year=year, month=month, plant_code=plant_code)
     
     result_dthu = pd.DataFrame(
         {
@@ -71,15 +71,15 @@ def chitieu(year, month, plant_code='Select All'):
         '': ['', '', '', '', '', ''],
         '  Thực Hiện  ': [(sum_fm_tsv01 + sum_fm_vm01), (sum_fm_tsv01), (sum_fm_vm01), (sum_fm_tsv07 + sum_fm_vm07), (sum_fm_tsv07), (sum_fm_vm07)],
         '  Cùng Kỳ    ': [(sum_fm_tsv01_ck + sum_fm_vm01_ck), (sum_fm_tsv01_ck), (sum_fm_vm01_ck), (sum_fm_tsv07_ck + sum_fm_vm07_ck), (sum_fm_tsv07_ck), (sum_fm_vm07_ck)],
-        '  Kế Hoạch   ': [(sum_fm_tsv01 + sum_fm_vm01), (sum_fm_tsv01), (sum_fm_vm01), (sum_fm_tsv07 + sum_fm_vm07), (sum_fm_tsv07), (sum_fm_vm07)],
         ' ': ['', '', '', '', '', ''],
         ' LK Thực Hiện': [(sum_fm_tsv01_lk + sum_fm_vm01_lk), (sum_fm_tsv01_lk), (sum_fm_vm01_lk), (sum_fm_tsv07_lk + sum_fm_vm07_lk), (sum_fm_tsv07_lk), (sum_fm_vm07_lk)],
         ' LK Cùng Kỳ  ': [(sum_fm_tsv01_ck_lk + sum_fm_vm01_ck_lk), (sum_fm_tsv01_ck_lk), (sum_fm_vm01_ck_lk), (sum_fm_tsv07_ck_lk + sum_fm_vm07_ck_lk), (sum_fm_tsv07_ck_lk), (sum_fm_vm07_ck_lk)],
-        ' LK Kế Hoạch ': [(sum_fm_tsv01 + sum_fm_vm01), (sum_fm_tsv01), (sum_fm_vm01), (sum_fm_tsv07 + sum_fm_vm07), (sum_fm_tsv07), (sum_fm_vm07)],
         '  ': ['', '', '', '', '', ''],
         'LK Thực Hiện ': [(sum_fm_tsv01_lk + sum_fm_vm01_lk), (sum_fm_tsv01_lk), (sum_fm_vm01_lk), (sum_fm_tsv07_lk + sum_fm_vm07_lk), (sum_fm_tsv07_lk), (sum_fm_vm07_lk)],
-        '       KH Năm': [(sum_fm_tsv01 + sum_fm_vm01), (sum_fm_tsv01), (sum_fm_vm01), (sum_fm_tsv07 + sum_fm_vm07), (sum_fm_tsv07), (sum_fm_vm07)]
         }
     )    
 
     return result_dthu
+
+# result_dthu = chitieu(year=[2025], month=[1], plant_code='Select All')
+# st.write('Result DThu:', result_dthu)
