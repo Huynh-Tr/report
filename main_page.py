@@ -51,7 +51,7 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 ''')
 
 # divide to 5 columns
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3, col4, col5  = st.columns(5)
 
 # multi selection plant code
 plant_code = ['1277', '1617']
@@ -64,12 +64,12 @@ plant_code = col1.multiselect('Select plant code:', plant_code)
 # multi selection year
 year = list(range(2021, 2026))
 # year = data_tsv["Month year"].dt.year.unique().tolist()
-year = col2.multiselect('Select year:', year, default=year[-1])
+year = col2.multiselect('Select year:', year, default=datetime.datetime.now().year)
 
 # multi selection month
 month = list(range(1, 13))
 # month = data_tsv["Month year"].dt.month.unique().tolist()
-month = col3.multiselect('Select month:', month, default=month[-1])
+month = col3.multiselect('Select month:', month, default=datetime.datetime.now().month)
 
 if plant_code==['Select All']:
     # chi tieu dthu lg
@@ -79,7 +79,7 @@ if plant_code==['Select All']:
     # chi tieu ton kho
     result_tkho = tkho.chitieu(year=year, month=month, plant_code='Select All')
     # ke hoach
-    # result_kh = kh.result_kh(year=year, month=month, plant_code='Select All').set_index('Chỉ Tiêu')
+    result_kh = kh.result_kh(year=year, month=month, plant_code='Select All').set_index('Chỉ Tiêu')
 
 else:
     # chi tieu dthu lg
@@ -89,7 +89,7 @@ else:
     # chi tieu ton kho
     result_tkho = tkho.chitieu(year=year, month=month, plant_code=plant_code)
     # ke hoach
-    # result_kh = kh.result_kh(year=year, month=month, plant_code=plant_code).set_index('Chỉ Tiêu')
+    result_kh = kh.result_kh(year=year, month=month, plant_code=plant_code).set_index('Chỉ Tiêu')
 
 
 # st.write('Result DThu:', result_dthu)
@@ -97,15 +97,15 @@ else:
 # st.write('Result TKho:', result_tkho)
 
 def kqkd(result_dthu, result_tkho, result_cphi):
-    kqkd_th = result_dthu.iloc[3, 2] + result_tkho.iloc[0, 2] + result_cphi.iloc[0, 2]
-    kqkd_ck = result_dthu.iloc[3, 3] + result_tkho.iloc[0, 3] + result_cphi.iloc[0, 3]
-    kqkd_lk = result_dthu.iloc[3, 6] + result_tkho.iloc[0, 6] + result_cphi.iloc[0, 6]
-    kqkd_ck_lk = result_dthu.iloc[3, 6] + result_tkho.iloc[0, 6] + result_cphi.iloc[0, 6]
+    kqkd_th = result_dthu.iloc[3, 2] - result_tkho.iloc[0, 2] - result_cphi.iloc[0, 2]
+    kqkd_ck = result_dthu.iloc[3, 3] - result_tkho.iloc[0, 3] - result_cphi.iloc[0, 3]
+    kqkd_lk = result_dthu.iloc[3, 5] - result_tkho.iloc[0, 5] - result_cphi.iloc[0, 5]
+    kqkd_ck_lk = result_dthu.iloc[3, 6] - result_tkho.iloc[0, 6] - result_cphi.iloc[0, 6]
 
-    kqkd_ex_vm_th = result_dthu.iloc[3, 2] + result_tkho.iloc[0, 2] + result_cphi.iloc[0, 2] - result_dthu.iloc[5, 2] - result_tkho.iloc[2, 3]
-    kqkd_ex_vm_ck = result_dthu.iloc[3, 3] + result_tkho.iloc[0, 3] + result_cphi.iloc[0, 3] - result_dthu.iloc[5, 3] - result_tkho.iloc[2, 3]
-    kqkd_ex_vm_lk = result_dthu.iloc[3, 6] + result_tkho.iloc[0, 6] + result_cphi.iloc[0, 6] - result_dthu.iloc[5, 6] - result_tkho.iloc[2, 6]
-    kqkd_ex_vm_ck_lk = result_dthu.iloc[3, 6] + result_tkho.iloc[0, 6] + result_cphi.iloc[0, 6] - result_dthu.iloc[5, 6] - result_tkho.iloc[2, 6]
+    kqkd_ex_vm_th = result_dthu.iloc[3, 2] - result_tkho.iloc[0, 2] - result_cphi.iloc[0, 2] - result_dthu.iloc[5, 2] - result_tkho.iloc[2, 3]
+    kqkd_ex_vm_ck = result_dthu.iloc[3, 3] - result_tkho.iloc[0, 3] - result_cphi.iloc[0, 3] - result_dthu.iloc[5, 3] - result_tkho.iloc[2, 3]
+    kqkd_ex_vm_lk = result_dthu.iloc[3, 5] - result_tkho.iloc[0, 5] - result_cphi.iloc[0, 5] - result_dthu.iloc[5, 5] - result_tkho.iloc[2, 5]
+    kqkd_ex_vm_ck_lk = result_dthu.iloc[3, 6] - result_tkho.iloc[0, 6] - result_cphi.iloc[0, 6] - result_dthu.iloc[5, 6] - result_tkho.iloc[2, 6]
 
     result_kqkd = pd.DataFrame(
         {
@@ -130,32 +130,50 @@ df = pd.concat([result_dthu, result_cphi, result_tkho, result_kqkd], axis=0).set
     # result_kqkd
 
 # concat kh
-# df = pd.concat([df, result_kh], axis=1)
-# .reset_index(drop=True)
-# df = df.merge(result_kh, left_index=True, right_index=True)
-# st.write('Result DThu:', kh.get_chitieu(df, "Doanh Thu", "TSV", thang=month, nam=year, plant_code='Select All'))
+df = pd.concat([df, result_kh], axis=1).reset_index(drop=False)
 
-# st.write(df)
-st.write(kh.result_kh(year=year, month=month, plant_code='Select All'))
+# add column to dataframe
+df['%TH-CK'] = (df['  Thực Hiện  '] - df['  Cùng Kỳ    ']) / df['  Cùng Kỳ    '] * 100
+df['%LK-CK'] = (df[' LK Thực Hiện'] - df[' LK Cùng Kỳ  ']) / df[' LK Cùng Kỳ  '] * 100
+df['%TH-KH'] = (df['  Thực Hiện  '] - df['Kế Hoạch']) / df['Kế Hoạch'] * 100
+df['%LK-KH'] = (df[' LK Thực Hiện'] - df['LK Kế Hoạch']) / df['LK Kế Hoạch'] * 100
+df['%LK-KH Năm'] = df['LK Thực Hiện '] / df['KH Năm'] * 100
+df.fillna(0, inplace=True)
 
-# bold_rows_df = lambda x: ['font-weight: bold' if x.name in [0, 3, 6, 18, 21, 22, 23, 24] else '' for _ in x]
-# italic_row_df = lambda x: ['font-style: italic' if x.name in list(range(9, 18)) else '' for _ in x]
+# reordering columns
+cols = ['Chỉ Tiêu', '', '  Thực Hiện  ', '  Cùng Kỳ    ', '%TH-CK', 'Kế Hoạch', '%TH-KH', ' ', \
+        ' LK Thực Hiện', ' LK Cùng Kỳ  ', '%LK-CK', 'LK Kế Hoạch', '%LK-KH', '  ', \
+        'LK Thực Hiện ', 'KH Năm', '%LK-KH Năm']
+df = df[cols]
 
-# # Apply the styling function to the DataFrame bold_rows_df and italic_row_df
-# styled_df = df.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
+# styling
+# Define the styling function for the DataFrame
+bold_rows_df = lambda x: ['font-weight: bold' if x.name in [0, 3, 6, 18, 21, 22, 23, 24] else '' for _ in x]
+italic_row_df = lambda x: ['font-style: italic' if x.name in list(range(9, 18)) else '' for _ in x]
 
-# # Apply 2 decimal places format to the DataFrame with text formatted on the left side, set the number to right side, header to center
-# styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', '  Kế Hoạch   ', \
-#                                                                 ' LK Thực Hiện', ' LK Cùng Kỳ  ', ' LK Kế Hoạch ', \
-#                                                                 'LK Thực Hiện ', '       KH Năm']]) \
-#                     .set_properties(**{'text-align': 'right'}) \
-#                     .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'text-align': 'left'}) \
-#                     .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}])
+# Apply the styling function to the DataFrame bold_rows_df and italic_row_df
+styled_df = df.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
 
-# # hide index of dataframe
-# styled_df = styled_df.hide(axis='index')
+# Apply 2 decimal places format to the DataFrame with text formatted on the left side, set the number to right side, header to center
+styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', 'Kế Hoạch', \
+                                                                ' LK Thực Hiện', ' LK Cùng Kỳ  ', 'LK Kế Hoạch', \
+                                                                'LK Thực Hiện ', 'KH Năm']]) \
+                    .format("{:.2f}%", subset=pd.IndexSlice[:, ['%TH-CK', '%LK-CK', '%TH-KH', '%LK-KH', '%LK-KH Năm']]) \
+                    .set_properties(**{'text-align': 'right'}) \
+                    .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'text-align': 'left'}) \
+                    .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}]) \
+                    .set_table_styles([{'selector': 'td', 'props': [('font-size', '10pt')]}, {'selector': 'th', 'props': [('font-size', '10pt')]}])
 
-# st.write(styled_df.to_html(), unsafe_allow_html=True)
+
+# shorten the column height of all row
+# styled_df = styled_df.set_properties(**{'height': '5px'})
+
+# hide index of dataframe
+styled_df = styled_df.hide(axis='index')
+
+st.write(styled_df.to_html(), unsafe_allow_html=True)
+
+# write styled df to streamlit on both col 1 and 2
 
 # endtime
 end = time.time()

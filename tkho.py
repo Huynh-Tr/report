@@ -36,16 +36,16 @@ def tkho():
 
 def chitieu_theoky(df, col, year, month, plant_code):
     if plant_code == 'Select All':
-        chitieu_th = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year))][col].sum() / 1e9
-        chitieu_ck = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1]))][col].sum() / 1e9
-        chitieu_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year))][col].sum() / 1e9
-        chitieu_ck_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1]))][col].sum() / 1e9
+        chitieu_th = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year))][col].sum() / 1e9 * -1 
+        chitieu_ck = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1]))][col].sum() / 1e9 * -1
+        chitieu_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year))][col].sum() / 1e9 * -1
+        chitieu_ck_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1]))][col].sum() / 1e9 * -1
 
     else:
-        chitieu_th = df[(df["Plant Code"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year))][col].sum() / 1e9
-        chitieu_ck = df[(df["Plant Code"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1]))][col].sum() / 1e9
-        chitieu_lk = df[(df["Plant Code"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year))][col].sum() / 1e9
-        chitieu_ck_lk = df[(df["Plant Code"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1]))][col].sum() / 1e9
+        chitieu_th = df[(df["Plant Code"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year))][col].sum() / 1e9 * -1
+        chitieu_ck = df[(df["Plant Code"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1]))][col].sum() / 1e9 * -1
+        chitieu_lk = df[(df["Plant Code"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year))][col].sum() / 1e9 * -1
+        chitieu_ck_lk = df[(df["Plant Code"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1]))][col].sum() / 1e9 * -1
 
     return chitieu_th, chitieu_ck, chitieu_lk, chitieu_ck_lk
 
@@ -69,7 +69,7 @@ def chitieu(year, month, plant_code='Select All'):
 
     result_tkho = pd.DataFrame(
         {
-        'Chỉ Tiêu': ['Chi Phí Vốn', 'TSV', 'VM'],
+        'Chỉ Tiêu': ['Chi Phí Vốn', '- TSV   ', '- VM   '],
         '': ['', '', ''],
         '  Thực Hiện  ': [sum_cpv_tsv + sum_cpv_vm, sum_cpv_tsv, sum_cpv_vm],
         '  Cùng Kỳ    ': [sum_cpv_tsv_ck + sum_cpv_vm_ck, sum_cpv_tsv_ck, sum_cpv_vm_ck],

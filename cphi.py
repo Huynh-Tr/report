@@ -6,19 +6,7 @@ import requests
 import warnings
 warnings.filterwarnings("ignore")
 
-# def load_github_files():
-#     url = 'https://api.github.com/repos/Huynh-Tr/report/contents/CP'
-#     response = requests.get(url)
-#     if response.status_code == 200:
-#         files = pd.DataFrame(response.json())
-#         files['name'] = files['name'].str.replace('.csv', '')
-#         return files['download_url'].tolist()
-#     else:
-#         st.error("Failed to load data from GitHub.")
-#         return None
-
 parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.parquet"
-# parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\cphi.parquet"
 
 def cphi():        
     df = pd.read_parquet(parquet)
@@ -41,16 +29,16 @@ def cphi():
 
 def chitieu_theoky(df, col_cp, col, year, month, plant_code):
     if plant_code == 'Select All':
-        chitieu_th = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
-        chitieu_ck = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
-        chitieu_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
-        chitieu_ck_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+        chitieu_th = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9 * -1
+        chitieu_ck = df[(df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9 * -1
+        chitieu_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9 * -1
+        chitieu_ck_lk = df[(df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9 * -1
 
     else:
-        chitieu_th = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
-        chitieu_ck = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
-        chitieu_lk = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
-        chitieu_ck_lk = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9
+        chitieu_th = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9 * -1
+        chitieu_ck = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(month)) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9 * -1
+        chitieu_lk = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin(year)) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9 * -1
+        chitieu_ck_lk = df[(df["MaCH"].isin(plant_code)) & (df["Month year"].dt.month.isin(range(1, max(month) + 1))) & (df["Month year"].dt.year.isin([max(year) - 1])) & (df["GL LV1 Name"].str.contains(col_cp))][col].sum() / 1e9 * -1
 
     return chitieu_th, chitieu_ck, chitieu_lk, chitieu_ck_lk
 
@@ -134,8 +122,8 @@ def chitieu(year, month=1, plant_code='Select All'):
     # dataframe cphi
     result_cphi = pd.DataFrame(
         {
-            "Chỉ Tiêu": ["Chi Phí Vận Hành", "Chi Phí Nhân Viên", "Chi Phí Ngoài Lương", 'CP CCDC', 'CP KH TSCĐ', 'CP vật liệu phụ',
-        'CP Còn lại', 'CP Thuê ngoài', 'CP hành chính', 'CP chuyển tiền', 'CP Marketing & Khuyến mãi', 'CP sửa chữa, bảo trì'],
+            "Chỉ Tiêu": ["Chi Phí Vận Hành", "+ Chi Phí Nhân Viên", "+ Chi Phí Ngoài Lương", '- CP CCDC', '- CP KH TSCĐ', '- CP vật liệu phụ',
+        '- CP Còn lại', '- CP Thuê ngoài', '- CP hành chính', '- CP chuyển tiền', '- CP Marketing & Khuyến mãi', '- CP sửa chữa, bảo trì'],
             '': ['' for i in range(12)],
             '  Thực Hiện  ': [sum_fm_cp, sum_fm_cp_nv, sum_fm_cp_nl, sum_fm_cp_ccdc, sum_fm_cp_khtscd, sum_fm_cp_vlp, sum_fm_cp_cl, sum_fm_cp_tn, sum_fm_cp_hc, sum_fm_cp_ct, sum_fm_cp_mk, sum_fm_cp_scbt],
             '  Cùng Kỳ    ': [sum_fm_cp_ck, sum_fm_cp_nv_ck, sum_fm_cp_nl_ck, sum_fm_cp_ccdc_ck, sum_fm_cp_khtscd_ck, sum_fm_cp_vlp_ck, sum_fm_cp_cl_ck, sum_fm_cp_tn_ck, sum_fm_cp_hc_ck, sum_fm_cp_ct_ck, sum_fm_cp_mk_ck, sum_fm_cp_scbt_ck],

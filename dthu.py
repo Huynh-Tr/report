@@ -9,7 +9,6 @@ import warnings
 warnings.filterwarnings("ignore")
 
 parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/dthu.parquet"
-# parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\dthu.parquet"
 
 def dthu():
     df = pd.read_parquet(parquet)
@@ -67,7 +66,7 @@ def chitieu(year, month, plant_code='Select All'):
     
     result_dthu = pd.DataFrame(
         {
-        'Chỉ Tiêu': ['Doanh thu', 'TSV', 'VM', 'Lãi Gộp', 'TSV', 'VM'],
+        'Chỉ Tiêu': ['Doanh thu', '- TSV ', '- VM ', 'Lãi Gộp', '- TSV  ', '- VM  '],
         '': ['', '', '', '', '', ''],
         '  Thực Hiện  ': [(sum_fm_tsv01 + sum_fm_vm01), (sum_fm_tsv01), (sum_fm_vm01), (sum_fm_tsv07 + sum_fm_vm07), (sum_fm_tsv07), (sum_fm_vm07)],
         '  Cùng Kỳ    ': [(sum_fm_tsv01_ck + sum_fm_vm01_ck), (sum_fm_tsv01_ck), (sum_fm_vm01_ck), (sum_fm_tsv07_ck + sum_fm_vm07_ck), (sum_fm_tsv07_ck), (sum_fm_vm07_ck)],
