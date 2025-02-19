@@ -34,7 +34,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 # center of the layout
-st.markdown('<h1 style="text-align: center;">Main Page</h1>', unsafe_allow_html=True)
+st.markdown('<h1 style="text-align: center;">✌Main Page✌</h1>', unsafe_allow_html=True)
 st.divider()
 
 st.header('Welcome to the main page!')
