@@ -80,7 +80,7 @@ dthu_tsv, dthu_vm = dthu.dthu()
 # st.write(dthu_tsv)
 chitieu_th, chitieu_ck, chitieu_lk, chitieu_ck_lk = dthu.chitieu_theoky_plot(df=dthu_tsv, year=[2024, 2025], month=range(1, 13), plant_code='Select All')
 df = (chitieu_th.groupby(["Month year"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum() / 1e9 )
-st.write(df.values)
+# st.write(df.values)
 
 
 fig, ax = plt.subplots(2, 2, figsize=(20, 20))
