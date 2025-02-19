@@ -94,22 +94,22 @@ ax[0, 0].legend(['Doanh Thu', 'Lãi Gộp'], loc='upper right')
 # set no border
 ax[0, 0].spines['top'].set_visible(False)
 ax[0, 0].spines['right'].set_visible(False)
-# st.pyplot(fig)
+st.pyplot(fig)
 
 # fig 2
-f2 = (chitieu_th.groupby(["Product Group 4 Name"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum() / 1e9).sort_values(by="FM 01_Invoices Revenue", ascending=False)[:10]
-f2["%"] = f2["FM 07_Gross Profit"] / f2["FM 01_Invoices Revenue"]
-ax2 = ax[0, 1].twinx()
-f2[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].plot(kind='bar', color='blue', alpha=0.7, ax=ax[0, 1])
-f2["%"].plot(kind='line', color='red', alpha=0.1, marker='*', secondary_y=True, ax=ax[0, 1])
-for i, txt in enumerate(f2["%"]):
-    ax2.annotate(f'{txt:.2%}', (i, f2["%"].iloc[i]), textcoords="offset points", xytext=(0.1,0.1), ha='center', color='red')
+# f2 = (chitieu_th.groupby(["Product Group 4 Name"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum() / 1e9).sort_values(by="FM 01_Invoices Revenue", ascending=False)[:10]
+# f2["%"] = f2["FM 07_Gross Profit"] / f2["FM 01_Invoices Revenue"]
+# ax2 = ax[0, 1].twinx()
+# f2[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].plot(kind='bar', color='blue', alpha=0.7, ax=ax[0, 1])
+# f2["%"].plot(kind='line', color='red', alpha=0.1, marker='*', secondary_y=True, ax=ax[0, 1])
+# for i, txt in enumerate(f2["%"]):
+#     ax2.annotate(f'{txt:.2%}', (i, f2["%"].iloc[i]), textcoords="offset points", xytext=(0.1,0.1), ha='center', color='red')
 
-for item in ax[0, 1].get_xticklabels():
-    item.set_rotation(90)
+# for item in ax[0, 1].get_xticklabels():
+#     item.set_rotation(90)
 
-plt.tight_layout()
-st.pyplot(fig)
+# plt.tight_layout()
+# st.pyplot(fig)
 
 # fig 3
 
