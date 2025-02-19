@@ -20,6 +20,8 @@ from helper import *
 
 # https://api.github.com/repos/Huynh-Tr/report/contents/
 
+# layout wide
+st.set_page_config(layout='wide')
 # hide menu
 st.markdown(
     """
@@ -31,10 +33,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-# layout wide
-st.set_page_config(layout='wide')
-
 # center of the layout
 st.markdown('<h1 style="text-align: center;">Main Page</h1>', unsafe_allow_html=True)
 st.divider()
