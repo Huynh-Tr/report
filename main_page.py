@@ -20,6 +20,18 @@ from helper import *
 
 # https://api.github.com/repos/Huynh-Tr/report/contents/
 
+# hide menu
+st.markdown(
+    """
+    <style>
+    #root > div:nth-child(1) > div.withScreencast > div > header > div.stAppToolbar.st-emotion-cache-15ecox0.e4hpqof2 {
+        visibility: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # layout wide
 st.set_page_config(layout='wide')
 
