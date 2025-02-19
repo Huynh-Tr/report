@@ -44,12 +44,12 @@ st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 start = time.time()
 
     
-# button clear cache
-if st.button('Clear cache'):
-    st.cache_data.clear()
+# # button clear cache
+# if st.button('Clear cache'):
+#     st.cache_data.clear()
 
 
-data_tsv, data_vm = dthu.dthu()
+# data_tsv, data_vm = dthu.dthu()
 
 st.html('''
 <style>
