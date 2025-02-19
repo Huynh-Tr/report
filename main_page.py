@@ -59,7 +59,7 @@ plant_code = ['1277', '1617']
 
 # add select all to the list
 plant_code = ['Select All'] + plant_code
-plant_code = col1.multiselect('Select plant code:', plant_code)
+plant_code = col1.multiselect('Select plant code:', plant_code, default=['Select All'])
 
 # multi selection year
 year = list(range(2021, 2026))
