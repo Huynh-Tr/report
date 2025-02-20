@@ -37,9 +37,6 @@ st.markdown(
 st.markdown('<h1 style="text-align: center;">✌Main Page✌</h1>', unsafe_allow_html=True)
 st.divider()
 
-st.header('Welcome to the main page!')
-st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
-
 # starttime
 start = time.time()
 
@@ -63,23 +60,37 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 # divide to 5 columns
 col1, col2, col3, col4, col5  = st.columns(5)
 
-# multi selection plant code
-plant_code = ['1277', '1617']
-# plant_code = data_tsv["Plant Code"].unique().tolist()
+with st.sidebar.expander("Select year", expanded=False):
+    year = [st.radio('Select year:', list(range(2025, 2023, -1)), index=0, label_visibility='collapsed')]
 
-# add select all to the list
-plant_code = ['Select All'] + plant_code
-plant_code = col1.multiselect('Select plant code:', plant_code, default=['Select All'])
+with st.sidebar.expander("Select month", expanded=False):
+    month = [st.radio('Select month:', list(range(1, 13)), index=0, label_visibility='collapsed')]
 
-# multi selection year
-year = list(range(2021, 2026))
-# year = data_tsv["Month year"].dt.year.unique().tolist()
-year = col2.multiselect('Select year:', year, default=datetime.datetime.now().year)
+with st.sidebar.expander("Select Plant Code", expanded=False):
+# # multi selection plant code
+#     # plant_code = ['1277', '1617']
+#     # plant_code = ['Select All'] + plant_code
+#     # plant_code = st.multiselect('Select plant code:', plant_code, default=['Select All'])
 
-# multi selection month
-month = list(range(1, 13))
-# month = data_tsv["Month year"].dt.month.unique().tolist()
-month = col3.multiselect('Select month:', month, default=datetime.datetime.now().month)
+#     # multi selection year
+#     year = list(range(2021, 2026))
+#     # year = data_tsv["Month year"].dt.year.unique().tolist()
+#     # year = st.multiselect('Select year:', year, default=datetime.datetime.now().year)
+#     year = [st.radio('Select year:', list(range(2025, 2023, -1)))]
+
+#     # multi selection month
+#     month = list(range(1, 13))
+#     # month = data_tsv["Month year"].dt.month.unique().tolist()
+#     # month = st.multiselect('Select month:', month, default=datetime.datetime.now().month)
+#     month = [st.radio('Select month:', list(range(1, 13)))]
+
+#     # multi selection plant code
+#     plant_input = ['1277', '1617']
+#     plant_input = ['Select All'] + plant_input
+    plant_code = [st.text_input('Select plant code:', 'Select All')]
+
+st.header(f'Báo cáo kết quả vận hành tháng :blue[{month[0]} - {year[0]}]')
+st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 
 if plant_code==['Select All']:
     # chi tieu dthu lg
@@ -142,12 +153,19 @@ df = pd.concat([result_dthu, result_cphi, result_tkho, result_kqkd], axis=0).set
 # concat kh
 df = pd.concat([df, result_kh], axis=1).reset_index(drop=False)
 
+def safe_divide(numerator, denominator):
+    # if denominator.apply(all()) == 0:
+    #     return 0
+    # else:
+    return np.where(denominator != 0, (numerator - denominator) / denominator * 100, 0)
+# handle divide by zero in dataframe row by row
+
 # add column to dataframe
-df['%TH-CK'] = (df['  Thực Hiện  '] - df['  Cùng Kỳ    ']) / df['  Cùng Kỳ    '] * 100
-df['%LK-CK'] = (df[' LK Thực Hiện'] - df[' LK Cùng Kỳ  ']) / df[' LK Cùng Kỳ  '] * 100
-df['%TH-KH'] = (df['  Thực Hiện  '] - df['Kế Hoạch']) / df['Kế Hoạch'] * 100
-df['%LK-KH'] = (df[' LK Thực Hiện'] - df['LK Kế Hoạch']) / df['LK Kế Hoạch'] * 100
-df['%LK-KH Năm'] = df['LK Thực Hiện '] / df['KH Năm'] * 100
+df['%TH-CK'] = safe_divide(df['  Thực Hiện  '], df['  Cùng Kỳ    '])   # (df['  Thực Hiện  '] - df['  Cùng Kỳ    ']) / df['  Cùng Kỳ    '] * 100
+df['%LK-CK'] = safe_divide(df[' LK Thực Hiện'], df[' LK Cùng Kỳ  '])   # (df[' LK Thực Hiện'] - df[' LK Cùng Kỳ  ']) / df[' LK Cùng Kỳ  '] * 100
+df['%TH-KH'] = safe_divide(df['  Thực Hiện  '], df['Kế Hoạch'])      # (df['  Thực Hiện  '] - df['Kế Hoạch']) / df['Kế Hoạch'] * 100
+df['%LK-KH'] = safe_divide(df[' LK Thực Hiện'], df['LK Kế Hoạch'])    # (df[' LK Thực Hiện'] - df['LK Kế Hoạch']) / df['LK Kế Hoạch'] * 100
+df['%LK-KH Năm'] = safe_divide(df['LK Thực Hiện '], df['KH Năm']) + 100 # df['LK Thực Hiện '] / df['KH Năm'] * 100
 df.fillna(0, inplace=True)
 
 # reordering columns
@@ -156,6 +174,10 @@ cols = ['Chỉ Tiêu', '', '  Thực Hiện  ', '  Cùng Kỳ    ', '%TH-CK', 'K
         'LK Thực Hiện ', 'KH Năm', '%LK-KH Năm']
 df = df[cols]
 
+# df_top = df.loc[0:8, :]
+# df_cp = df.loc[9:17, :]
+# df_bot = df.loc[18:, :]
+
 # styling
 # Define the styling function for the DataFrame
 bold_rows_df = lambda x: ['font-weight: bold' if x.name in [0, 3, 6, 18, 21, 22, 23, 24] else '' for _ in x]
@@ -163,6 +185,9 @@ italic_row_df = lambda x: ['font-style: italic' if x.name in list(range(9, 18)) 
 
 # Apply the styling function to the DataFrame bold_rows_df and italic_row_df
 styled_df = df.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
+# styled_df_top = df_top.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
+# styled_df_cp = df_cp.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
+# styled_df_bot = df_bot.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
 
 # Apply 2 decimal places format to the DataFrame with text formatted on the left side, set the number to right side, header to center
 styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', 'Kế Hoạch', \
@@ -174,6 +199,38 @@ styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện
                     .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}]) \
                     .set_table_styles([{'selector': 'td', 'props': [('font-size', '10pt')]}, {'selector': 'th', 'props': [('font-size', '10pt')]}])
 
+# set width of "Chi Tiêu" column
+# styled_df = styled_df_top.set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'width': '300px'})
+
+# styled_df_top = styled_df_top.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', 'Kế Hoạch', \
+#                                                                 ' LK Thực Hiện', ' LK Cùng Kỳ  ', 'LK Kế Hoạch', \
+#                                                                 'LK Thực Hiện ', 'KH Năm']]) \
+#                     .format("{:.2f}%", subset=pd.IndexSlice[:, ['%TH-CK', '%LK-CK', '%TH-KH', '%LK-KH', '%LK-KH Năm']]) \
+#                     .set_properties(**{'text-align': 'right'}) \
+#                     .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'text-align': 'left'}) \
+#                     .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}]) \
+#                     .set_table_styles([{'selector': 'td', 'props': [('font-size', '10pt')]}, {'selector': 'th', 'props': [('font-size', '10pt')]}]) \
+#                     .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'width': '300px'})
+
+# styled_df_cp = styled_df_cp.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', 'Kế Hoạch', \
+#                                                                 ' LK Thực Hiện', ' LK Cùng Kỳ  ', 'LK Kế Hoạch', \
+#                                                                 'LK Thực Hiện ', 'KH Năm']]) \
+#                     .format("{:.2f}%", subset=pd.IndexSlice[:, ['%TH-CK', '%LK-CK', '%TH-KH', '%LK-KH', '%LK-KH Năm']]) \
+#                     .set_properties(**{'text-align': 'right'}) \
+#                     .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'text-align': 'left'}) \
+#                     .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}]) \
+#                     .set_table_styles([{'selector': 'td', 'props': [('font-size', '10pt')]}, {'selector': 'th', 'props': [('font-size', '10pt')]}]) \
+#                     .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'width': '280px'})
+
+# styled_df_bot = styled_df_bot.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', 'Kế Hoạch', \
+#                                                                 ' LK Thực Hiện', ' LK Cùng Kỳ  ', 'LK Kế Hoạch', \
+#                                                                 'LK Thực Hiện ', 'KH Năm']]) \
+#                     .format("{:.2f}%", subset=pd.IndexSlice[:, ['%TH-CK', '%LK-CK', '%TH-KH', '%LK-KH', '%LK-KH Năm']]) \
+#                     .set_properties(**{'text-align': 'right'}) \
+#                     .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'text-align': 'left'}) \
+#                     .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}]) \
+#                     .set_table_styles([{'selector': 'td', 'props': [('font-size', '10pt')]}, {'selector': 'th', 'props': [('font-size', '10pt')]}]) \
+#                     .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'width': '300px'})
 
 # shorten the column height of all row
 # styled_df = styled_df.set_properties(**{'height': '5px'})
@@ -181,8 +238,16 @@ styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện
 # hide index of dataframe
 styled_df = styled_df.hide(axis='index')
 
+# styled_df_top = styled_df_top.hide(axis='index')
+# styled_df_cp = styled_df_cp.hide(axis='index')
+# styled_df_bot = styled_df_bot.hide(axis='index')
+
 st.write(styled_df.to_html(), unsafe_allow_html=True)
 
+# col1.write(styled_df_top.to_html(), unsafe_allow_html=True)
+# with col1.expander("Chi tiết chi phí", expanded=False):
+#     col1.write(styled_df_cp.to_html(), unsafe_allow_html=True)
+# col1.write(styled_df_bot.to_html(), unsafe_allow_html=True)
 # write styled df to streamlit on both col 1 and 2
 
 # endtime

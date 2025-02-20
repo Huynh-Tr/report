@@ -83,7 +83,7 @@ def chitieu(year, month=1, plant_code='Select All'):
     sum_fm_cp_ccdc, sum_fm_cp_ccdc_ck, sum_fm_cp_ccdc_lk, sum_fm_cp_ccdc_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP CCDC", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
     
     # cphi kh tscd
-    sum_fm_cp_khtscd, sum_fm_cp_khtscd_ck, sum_fm_cp_khtscd_lk, sum_fm_cp_khtscd_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP KH TSCD", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
+    sum_fm_cp_khtscd, sum_fm_cp_khtscd_ck, sum_fm_cp_khtscd_lk, sum_fm_cp_khtscd_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP KH TSCĐ", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
 
     # cphi vat lieu phu
     sum_fm_cp_vlp, sum_fm_cp_vlp_ck, sum_fm_cp_vlp_lk, sum_fm_cp_vlp_ck_lk = chitieu_theoky(df=data_cp, col_cp="CP vật liệu phụ", col="FM. Loc Amt", year=year, month=month, plant_code=plant_code)
