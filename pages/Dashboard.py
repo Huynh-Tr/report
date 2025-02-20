@@ -112,7 +112,9 @@ st.pyplot(fig)
 # st.pyplot(fig)
 
 # fig 3
+df = cphi.cphi()
 
+st.write(df)
 # fig 4
 
 # endtime
