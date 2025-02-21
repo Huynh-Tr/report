@@ -39,7 +39,7 @@ st.markdown('<h1 style="text-align: center;">Dash Board</h1>', unsafe_allow_html
 st.divider()
 
 st.header('Welcome to the dash board page!')
-st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
+st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 
 
 st.html('''
@@ -51,44 +51,52 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 </style>
 ''')
 
+start = time.time()
+
 # divide to 5 columns
 col1, col2, col3, col4, col5  = st.columns(5)
 
-# multi selection plant code
-plant_code = ['1277', '1617']
-# plant_code = data_tsv["Plant Code"].unique().tolist()
+dthu_tsv, dthu_vm = dthu.dthu()
 
-# add select all to the list
-plant_code = ['Select All'] + plant_code
-plant_code = col1.multiselect('Select plant code:', plant_code, default=['Select All'])
+with st.sidebar.expander("Select year", expanded=False):
+    year = [st.radio('Select year:', list(range(2025, 2023, -1)), index=0, label_visibility='collapsed')]
 
-# multi selection year
-year = list(range(2021, 2026))
-# year = data_tsv["Month year"].dt.year.unique().tolist()
-year = col2.multiselect('Select year:', year, default=datetime.datetime.now().year)
+with st.sidebar.expander("Select month", expanded=False):
+    month = [st.radio('Select month:', list(range(1, 13)), index=0, label_visibility='collapsed')]
 
-# multi selection month
-month = list(range(1, 13))
-# month = data_tsv["Month year"].dt.month.unique().tolist()
-month = col3.multiselect('Select month:', month, default=datetime.datetime.now().month)
+with st.sidebar.expander("Select Plant Code", expanded=False):
+    plant_code = [st.text_input('Select plant code:', 'Select All')]
+
+with st.sidebar.expander("Select L2", expanded=False):
+    L2 = [st.radio('Select L2:', ["All"] + dthu_tsv["Product Group 2 Name"].unique().tolist(), index=0, label_visibility='collapsed')]
+
+with st.sidebar.expander("Select L3", expanded=False):
+    L3 = [st.radio('Select L3:', ["All"] + dthu_tsv["Product Group 3 Name"].unique().tolist(), index=0, label_visibility='collapsed')]
+
+with st.sidebar.expander("Select L4", expanded=False):
+    L4 = [st.radio('Select L4:', ["All"] + dthu_tsv["Product Group 4 Name"].unique().tolist(), index=0, label_visibility='collapsed')]
 
 # starttime
-start = time.time()
 
 # Dthu plot
-dthu_tsv, dthu_vm = dthu.dthu()
 # st.write(dthu_tsv)
 chitieu_th, chitieu_ck, chitieu_lk, chitieu_ck_lk = dthu.chitieu_theoky_plot(df=dthu_tsv, year=[2024, 2025], month=range(1, 13), plant_code='Select All')
-df = (chitieu_th.groupby(["Month year"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum() / 1e9 )
-# st.write(df.values)
+def filter_df(df, L):    
+    if L == ["All"]:
+        return df
+    return df[df["Product Group 2 Name"].isin(L)]
 
+df = filter_df(chitieu_th, L2)
+df = filter_df(df, L3)
+df = filter_df(df, L4)
+df = (df.groupby(["Month year"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum() / 1e9 )
 
 fig, ax = plt.subplots(2, 2, figsize=(20, 20))
 # fig 1
 df.plot(kind='bar', ax=ax[0, 0])
-ax[0, 0].set_title('Doanh thu')
+ax[0, 0].set_title('Doanh thu - Lãi gộp')
 ax[0, 0].set_xlabel('Tháng')
-ax[0, 0].set_ylim([0, 300])
+# ax[0, 0].set_ylim([0, 300])
 ax[0, 0].set_ylabel('Tỷ VND')
 ax[0, 0].legend(['Doanh Thu', 'Lãi Gộp'], loc='upper right')
 # set no border
@@ -112,9 +120,9 @@ st.pyplot(fig)
 # st.pyplot(fig)
 
 # fig 3
-df = cphi.cphi()
+# df = cphi.cphi()
 
-st.write(df)
+# st.write(df)
 # fig 4
 
 # endtime
