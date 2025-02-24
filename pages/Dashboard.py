@@ -24,7 +24,7 @@ from helper import *
 # https://api.github.com/repos/Huynh-Tr/report/contents/
 
 # layout wide
-st.set_page_config(layout='wide')
+# st.set_page_config(layout='wide')
 # hide menu
 st.markdown(
     """

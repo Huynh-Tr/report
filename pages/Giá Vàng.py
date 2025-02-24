@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import datetime
 
 # layout wide
-st.set_page_config(layout='wide')
+# st.set_page_config(layout='wide')
 # hide menu
 st.markdown(
     """

@@ -1,246 +1,161 @@
 import streamlit as st 
 import pandas as pd 
+import time
 
-# authentication
-_x = ['a', 'b', 'c']
-_y = ['d', 'e', 'f']
-_z = ['g', 'h', 'i']
-_a = ['g', 'h', 'i']
+# layout wide
+# st.set_page_config(layout='wide')
+# hide menu
+# st.markdown(
+#     """
+#     <style>
+#     #root > div:nth-child(1) > div.withScreencast > div > header > div.stAppToolbar.st-emotion-cache-15ecox0.e4hpqof2 {
+#         visibility: hidden;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
-# c2 = {'username': {'roles': {'name':'email': 'a', 'password': 'b'}}}
-
-n = [{'name': a, 'email': y, 'password': z} for a, y, z in zip(_a, _y, _z)]
-credentials = {'usernames': {x: i for x, i in zip(_x, n)}}
-
-# st.write(credentials)
-
-# authenticator = stauth.Authenticate(credentials=credentials)
-# try:
-# authenticator.login()
-# except LoginError as e:
-#     st.error(e)
-
-
-if st.session_state["authentication_status"]:
-    with st.sidebar.expander("Select year", expanded=False):
-        year = [st.radio('Select year:', list(range(2025, 2023, -1)), index=0, label_visibility='collapsed')]
-
-    with st.sidebar.expander("Select month", expanded=False):
-        month = [st.radio('Select month:', list(range(1, 13)), index=0, label_visibility='collapsed')]
-
-    with st.sidebar.expander("Select Plant Code", expanded=False):
-        plant_code = [st.text_input('Select plant code:', 'Select All')]
-    # st.write('___')
-    # with st.sidebar.button("Logout"):    
-    authenticator.logout()
-    st.write(f'Welcome *{st.session_state["name"]}*')
-    st.header(f'Báo cáo kết quả vận hành tháng :blue[{month[0]} - {year[0]}]')
-    st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
-
-    if plant_code==['Select All']:
-        # chi tieu dthu lg
-        result_dthu  = dthu.chitieu(year=year, month=month, plant_code='Select All')
-        # chi tieu cphi
-        result_cphi = cphi.chitieu(year=year, month=month, plant_code='Select All')
-        # chi tieu ton kho
-        result_tkho = tkho.chitieu(year=year, month=month, plant_code='Select All')
-        # ke hoach
-        result_kh = kh.result_kh(year=year, month=month, plant_code='Select All').set_index('Chỉ Tiêu')
-
-    else:
-        # chi tieu dthu lg
-        result_dthu  = dthu.chitieu(year=year, month=month, plant_code=plant_code)
-        # chi tieu cphi
-        result_cphi = cphi.chitieu(year=year, month=month, plant_code=plant_code)
-        # chi tieu ton kho
-        result_tkho = tkho.chitieu(year=year, month=month, plant_code=plant_code)
-        # ke hoach
-        result_kh = kh.result_kh(year=year, month=month, plant_code=plant_code).set_index('Chỉ Tiêu')
+# # starttime
+# start = time.time()
 
 
-    def kqkd(result_dthu, result_tkho, result_cphi):
-        kqkd_th = result_dthu.iloc[3, 2] - result_tkho.iloc[0, 2] - result_cphi.iloc[0, 2]
-        kqkd_ck = result_dthu.iloc[3, 3] - result_tkho.iloc[0, 3] - result_cphi.iloc[0, 3]
-        kqkd_lk = result_dthu.iloc[3, 5] - result_tkho.iloc[0, 5] - result_cphi.iloc[0, 5]
-        kqkd_ck_lk = result_dthu.iloc[3, 6] - result_tkho.iloc[0, 6] - result_cphi.iloc[0, 6]
+# st.html('''
+# <style>
+# div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
+#     max-height: 38px !important; /* Fix the height */
+#     overflow: auto !important;
+# }
+# </style>
+# ''')
 
-        kqkd_ex_vm_th = result_dthu.iloc[3, 2] - result_tkho.iloc[0, 2] - result_cphi.iloc[0, 2] - result_dthu.iloc[5, 2] - result_tkho.iloc[2, 3]
-        kqkd_ex_vm_ck = result_dthu.iloc[3, 3] - result_tkho.iloc[0, 3] - result_cphi.iloc[0, 3] - result_dthu.iloc[5, 3] - result_tkho.iloc[2, 3]
-        kqkd_ex_vm_lk = result_dthu.iloc[3, 5] - result_tkho.iloc[0, 5] - result_cphi.iloc[0, 5] - result_dthu.iloc[5, 5] - result_tkho.iloc[2, 5]
-        kqkd_ex_vm_ck_lk = result_dthu.iloc[3, 6] - result_tkho.iloc[0, 6] - result_cphi.iloc[0, 6] - result_dthu.iloc[5, 6] - result_tkho.iloc[2, 6]
+p = r'D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\dims\dsql.xlsx'
+df = pd.read_excel(p)
+df['user'] = df['Email'].str.split('@').str[0]
+df['pwd'] = [str(i) for i in range(len(df))]
+# df
 
-        result_kqkd = pd.DataFrame(
-            {
-                'Chỉ Tiêu': ['LNTT', 'LNTT(-VM)', 'LNST', 'LNST(-VM)'],
-                '': ['', '', '', ''],
-                '  Thực Hiện  ': [kqkd_th, kqkd_ex_vm_th, kqkd_th * 0.8, kqkd_ex_vm_th * 0.8],
-                '  Cùng Kỳ    ': [kqkd_ck, kqkd_ex_vm_ck, kqkd_ck * 0.8, kqkd_ex_vm_ck * 0.8],
-                ' ': ['', '', '', ''],
-                ' LK Thực Hiện': [kqkd_lk, kqkd_ex_vm_lk, kqkd_lk * 0.8, kqkd_ex_vm_lk * 0.8],
-                ' LK Cùng Kỳ  ': [kqkd_ck_lk, kqkd_ex_vm_ck_lk, kqkd_ck_lk * 0.8, kqkd_ex_vm_ck_lk * 0.8],
-                '  ': ['', '', '', ''],
-                'LK Thực Hiện ': [kqkd_lk, kqkd_ex_vm_lk, kqkd_lk * 0.8, kqkd_ex_vm_lk * 0.8],
-            }
-        )
-        return result_kqkd
+# roles = df['Chức danh'].unique()
 
-    result_kqkd = kqkd(result_dthu, result_tkho, result_cphi)
+# tab1, tab2 = st.tabs(['login', 'register'])
 
-    # concat dataframes
-    df = pd.concat([result_dthu, result_cphi, result_tkho, result_kqkd], axis=0).set_index('Chỉ Tiêu')
+# login
 
-    # concat kh
-    df = pd.concat([df, result_kh], axis=1).reset_index(drop=False)
+st.session_state.role = None
 
-    def safe_divide(numerator, denominator):
-        # if denominator.apply(all()) == 0:
-        #     return 0
-        # else:
-        return np.where(denominator != 0, (numerator - denominator) / denominator * 100, 0)
-    # handle divide by zero in dataframe row by row
+def login():
+    name = st.text_input('Username', key='name')
+    password = st.text_input('Password', type='password', key='password')
+    if st.button('Login'):
+        # st.session_state
+        if (password == df[df['user']==name]['pwd'].values):
+            st.session_state.role = role
+            st.session_state.user = df[df['user']==name]['HỌ VÀ TÊN'].values[0]
+            st.session_state.role = df[df['user']==name]['Chức danh'].values[0]
+            st.session_state.email = df[df['user']==name]['Email'].values[0]
+            st.write(f'Xin chào **{st.session_state["user"]}**')
+            st.write(f'Chức danh: *{st.session_state['role']}*')
+            st.rerun()
 
-    # add column to dataframe
-    df['%TH-CK'] = safe_divide(df['  Thực Hiện  '], df['  Cùng Kỳ    '])   # (df['  Thực Hiện  '] - df['  Cùng Kỳ    ']) / df['  Cùng Kỳ    '] * 100
-    df['%LK-CK'] = safe_divide(df[' LK Thực Hiện'], df[' LK Cùng Kỳ  '])   # (df[' LK Thực Hiện'] - df[' LK Cùng Kỳ  ']) / df[' LK Cùng Kỳ  '] * 100
-    df['%TH-KH'] = safe_divide(df['  Thực Hiện  '], df['Kế Hoạch'])      # (df['  Thực Hiện  '] - df['Kế Hoạch']) / df['Kế Hoạch'] * 100
-    df['%LK-KH'] = safe_divide(df[' LK Thực Hiện'], df['LK Kế Hoạch'])    # (df[' LK Thực Hiện'] - df['LK Kế Hoạch']) / df['LK Kế Hoạch'] * 100
-    df['%LK-KH Năm'] = safe_divide(df['LK Thực Hiện '], df['KH Năm']) + 100 # df['LK Thực Hiện '] / df['KH Năm'] * 100
-    df.fillna(0, inplace=True)
+def logout():
+    # st.button('Logout', on_click=st.session_state.clear)
+    # st.session_state.authentication_status = False
+    st.session_state.role = None
+    st.rerun()
 
-    # reordering columns
-    cols = ['Chỉ Tiêu', '', '  Thực Hiện  ', '  Cùng Kỳ    ', '%TH-CK', 'Kế Hoạch', '%TH-KH', ' ', \
-            ' LK Thực Hiện', ' LK Cùng Kỳ  ', '%LK-CK', 'LK Kế Hoạch', '%LK-KH', '  ', \
-            'LK Thực Hiện ', 'KH Năm', '%LK-KH Năm']
-    df = df[cols]
+#         # elif st.session_state["authentication_status"] is False:
+#         #     st.error('Username/password is incorrect')
+#         # elif st.session_state["authentication_status"] is None:
+#         #     st.warning('Please enter your username and password')
 
-    # styling
-    # Define the styling function for the DataFrame
-    bold_rows_df = lambda x: ['font-weight: bold' if x.name in [0, 3, 6, 18, 21, 22, 23, 24] else '' for _ in x]
-    italic_row_df = lambda x: ['font-style: italic' if x.name in list(range(9, 18)) else '' for _ in x]
+# # login()
+# # logout()
 
-    # Apply the styling function to the DataFrame bold_rows_df and italic_row_df
-    styled_df = df.style.apply(bold_rows_df, axis=1).apply(italic_row_df, axis=1)
+# # reg
+# name_reg = tab2.text_input('New Username', key='name_reg')
+# password_reg = tab2.text_input('New Password', type='password', key='password_reg')
 
-    # Apply 2 decimal places format to the DataFrame with text formatted on the left side, set the number to right side, header to center
-    styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện  ', '  Cùng Kỳ    ', 'Kế Hoạch', \
-                                                                    ' LK Thực Hiện', ' LK Cùng Kỳ  ', 'LK Kế Hoạch', \
-                                                                    'LK Thực Hiện ', 'KH Năm']]) \
-                        .format("{:.2f}%", subset=pd.IndexSlice[:, ['%TH-CK', '%LK-CK', '%TH-KH', '%LK-KH', '%LK-KH Năm']]) \
-                        .set_properties(**{'text-align': 'right'}) \
-                        .set_properties(subset=pd.IndexSlice[:, ['Chỉ Tiêu']], **{'text-align': 'left'}) \
-                        .set_table_styles([{'selector': 'th', 'props': [('text-align', 'center')]}]) \
-                        .set_table_styles([{'selector': 'td', 'props': [('font-size', '10pt')]}, {'selector': 'th', 'props': [('font-size', '10pt')]}])
+# if tab2.button('Register'):
+#     if name_reg in credentials:
+#         tab2.error('Username already exists')
+#     else:
+#         credentials[name_reg] = {'name': name_reg, 'pwd': password_reg}
+#         tab2.success('User registered successfully')
+# credentials
 
-    # hide index of dataframe
-    styled_df = styled_df.hide(axis='index')
+import streamlit as st
 
-    st.write(styled_df.to_html(), unsafe_allow_html=True)
+if "role" not in st.session_state:
+    st.session_state.role = None
 
-    # endtime
-    end = time.time()
-    # convert runtime
-    run_time = time.gmtime(end - start)
-    st.write("Run time: ", time.strftime("%M:%S", run_time))
-
-elif st.session_state["authentication_status"] is False:
-    st.error('Username/password is incorrect')
-elif st.session_state["authentication_status"] is None:
-    st.warning('Please enter your username and password')
+ROLES = [None, "Requester", "Responder", "Admin"]
 
 
+def login():
 
-# if "otp" not in st.session_state:
-#     st.session_state.otp = None  # Start with no OTP
+    st.header("Log in")
+    role = st.selectbox("Choose your role", ROLES)
 
-# if "otp_generated" not in st.session_state:
-#     st.session_state.otp_generated = False # start with no OTP generated
+    if st.button("Log in"):
+        st.session_state.role = role
+        st.rerun()
 
-# if not st.session_state.otp_generated: # Only generate if OTP is not generated yet.
-#     OTP = np.random.randint(1000, 9999)
-#     # np.random.seed(0) # Keep seed for testing purpose. Remove it in production.
-#     st.session_state.otp = OTP  # Store OTP in session state
-#     # st.write(OTP)
 
-# send_to_email = st.text_input('fill out the email')
-# if st.button("Send Email") and not st.session_state.otp_generated:  # Only send if OTP hasn't been sent.
-#     try:
-#         yag = yagmail.SMTP(st.secrets["gmail"]["user"], st.secrets["gmail"]["password"])
-#         yag.send(
-#             to=[send_to_email, st.secrets["gmail"]["user"]],
-#             subject="OTP Test!",
-#             contents=f'{st.session_state.otp}'  # Use the stored OTP
-#         )
-#         st.success("Email sent successfully!")
-#         st.session_state.otp_generated = True # Mark as generated
-#     except Exception as e:
-#         st.error(f"Error sending email: {e}")
+def logout():
+    st.session_state.role = None
+    st.rerun()
 
-# # st.session_state
+role = st.session_state.role
 
-# # OTP_check = st.text_input('OTP', 0)
+logout_page = st.Page(logout, title="Log out", icon="✔")
+settings = st.Page("settings.py", title="Settings", icon="⚙️")
+request_1 = st.Page(
+    "pages/Chi Tiết Chi Phí.py",
+    title="Request 1",
+    icon="✌",
+    default=(role == "Quản lý - Marketing"),
+)
+request_2 = st.Page(
+    "request/request_2.py", title="Request 2", icon="✌"
+)
+respond_1 = st.Page(
+    "pages/Dashboard.py",
+    title="Respond 1",
+    icon="✌",
+    default=(role == "Quản lý nhóm - Hành chính"),
+)
+respond_2 = st.Page(
+    "respond/respond_2.py", title="Respond 2", icon="✌"
+)
+admin_1 = st.Page(
+    "admin/admin_1.py",
+    title="Admin 1",
+    icon="✌",
+    default=(role == "Giám đốc - Chi nhánh"),
+)
+admin_2 = st.Page("pages/Giá Vàng.py", title="Admin 2", icon="✌")
 
-# if st.session_state.otp is not None and int(OTP_check) == st.session_state.otp:
-#     st.write('Right')
-# elif st.session_state.otp is not None and int(OTP_check)!= st.session_state.otp and OTP_check!= '0': # Added this condition to avoid showing "wrong" immediately.
-#     st.write('Wrong')
+account_pages = [logout_page, settings]
+request_pages = [request_1, request_2]
+respond_pages = [respond_1, respond_2]
+admin_pages = [admin_1, admin_2]
 
-# def clearss():
-#     st.session_state.otp = None
-#     st.session_state.otp_generated = False
+st.title("Request manager")
+# st.logo("images/horizontal_blue.png", icon_image="images/icon_blue.png")
 
-# if st.button('clear session state'):
-#     clearss()
-#     st.write('Session state cleared!')
-#     # st.session_state
+page_dict = {}
+if st.session_state.role in ["Giám đốc - Chi nhánh", "Quản lý nhóm - Hành chính"]:
+    page_dict["Request"] = request_pages
+if st.session_state.role in ["Giám đốc - Chi nhánh", "Quản lý - Marketing"]:
+    page_dict["Respond"] = respond_pages
+if st.session_state.role == "Giám đốc - Chi nhánh":
+    page_dict["Admin"] = admin_pages
 
-# # authentication
-# usernames = ['admin', 'user']
-# # password = ['admin', 'user']
-# # credentials = {'usernames': {'jsmith': {'email': 'jsmith@gmail.com', 'failed_login_attempts': 0, 'first_name': 'John', \
-# #       'last_name': 'Smith', 'logged_in': False, 'password': '12345'}, 
-# #                             'rbriggs': {'email': 'abc@gmail.com', 'failed_login_attempts': 0, 'first_name': 'Robert', \
-# #       'last_name': 'Briggs', 'logged_in': False, 'password': '1234'}
-# #                             }
-# #                 }
+if len(page_dict) > 0:
+    pg = st.navigation({"Account": account_pages} | page_dict)
+else:
+    pg = st.navigation([st.Page(login)])
 
-# _x = ['a', 'b', 'c']
-# _y = ['huynh.th@pnj.com.vn', 'loan.ttt01@pnj.com.vn', 'huynhvietjetair@gmail.com']
-# _z = ['g', 'h', 'i']
-# _a = ['g', 'h', 'i']
+pg.run()
 
-# # c2 = {'username': {'roles': {'name':'email': 'a', 'password': 'b'}}}
-
-# n = [{'name': a, 'email': y, 'password': z} for a, y, z in zip(_a, _y, _z)]
-# credentials = {'usernames': {x: i for x, i in zip(_x, n)}}
-# st.write(credentials)
-# # }
-
-# # emails = ['admin', 'user']
-# # roles = ['admin', 'user']
-# # OTP = ['123456', '123456']
-
-# authenticator = stauth.Authenticate(credentials=credentials)
-# # authenticator = stauth.Authenticate(usernames, password)
-# # try:
-# authenticator.login()
-# # except LoginError as e:
-# #     st.error(e)
-# if st.session_state.authentication_status:
-#     st.write("User is authenticated")
-
-# # st.session_state
-
-# if st.session_state["authentication_status"]:
-#     # st.write('___')
-#     authenticator.logout()
-#     st.write(f'Welcome *{st.session_state["name"]}*')
-#     # st.title('Some content')    
-#     # st.write('___')
-# elif st.session_state["authentication_status"] is False:
-#     st.error('Username/password is incorrect')
-# elif st.session_state["authentication_status"] is None:
-#     st.warning('Please enter your username and password')
-
-# # st.session_state
-
-# # st.session_state.authentication_status == False
+st.session_state
