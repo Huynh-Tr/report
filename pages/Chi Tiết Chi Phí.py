@@ -50,6 +50,7 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 ''')
 
 dimGL = dim.glaccount()
+dimGL
 # filter 641
 dimGL_filter = dimGL[(dimGL["G/L Account"].str.startswith('64'))][~dimGL["G/L Account"].str.startswith('6411')]
 
