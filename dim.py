@@ -13,7 +13,6 @@ path_ch = r'https://raw.githubusercontent.com/Huynh-Tr/report/main/dims/Dim_Danh
 @st.cache_data
 def ten_ch():
     df = pd.read_excel(path_ch, sheet_name="CuaHang (4cum)", header=2)
-    # df = df[["mã ch", "TÊN CỬA HÀNG", "AREA"]]
-    # create new column Ma-Ten = mã ch - TÊN CỬA HÀNG
-    df["Ma-Ten"] = "[" + df["mã ch"].astype('str') + " ] " + df["TÊN CỬA HÀNG"]
+    df["mã ch"] = df["mã ch"].astype(str)
+    df["Ma-Ten"] = "[" + df["mã ch"] + " ] " + df["TÊN CỬA HÀNG"]
     return df

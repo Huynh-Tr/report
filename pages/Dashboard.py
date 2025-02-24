@@ -7,6 +7,8 @@ from glob import glob
 import os
 import time
 import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -86,44 +88,41 @@ def filter_df(df, L):
         return df
     return df[df["Product Group 2 Name"].isin(L)]
 
+col1, col2 = st.columns(2)
+col3, col4 = st.columns(2)
 df = filter_df(chitieu_th, L2)
 df = filter_df(df, L3)
 df = filter_df(df, L4)
-df = (df.groupby(["Month year"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum() / 1e9 )
 
-fig, ax = plt.subplots(2, 2, figsize=(20, 20))
-# fig 1
-df.plot(kind='bar', ax=ax[0, 0])
-ax[0, 0].set_title('Doanh thu - Lãi gộp')
-ax[0, 0].set_xlabel('Tháng')
-# ax[0, 0].set_ylim([0, 300])
-ax[0, 0].set_ylabel('Tỷ VND')
-ax[0, 0].legend(['Doanh Thu', 'Lãi Gộp'], loc='upper right')
-# set no border
-ax[0, 0].spines['top'].set_visible(False)
-ax[0, 0].spines['right'].set_visible(False)
-st.pyplot(fig)
+# col1
+df_dt_lg = (df.groupby(["Month year"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum().reset_index())
+df_dt_lg["Month year"] = df_dt_lg["Month year"].dt.strftime('%Y-%m')
+df_dt_lg.columns = ['Month year', 'Doanh Thu', 'Lãi Gộp']
+fig1 = px.bar(df_dt_lg, x='Month year', y=['Doanh Thu', 'Lãi Gộp'], title='Doanh thu - Lãi gộp', labels={'value': 'Tỷ VND', 'variable': 'Loại'},
+             barmode='group')
+col1.plotly_chart(fig1, width=1400, height=400, use_container_width=False)
 
-# fig 2
-# f2 = (chitieu_th.groupby(["Product Group 4 Name"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum() / 1e9).sort_values(by="FM 01_Invoices Revenue", ascending=False)[:10]
-# f2["%"] = f2["FM 07_Gross Profit"] / f2["FM 01_Invoices Revenue"]
-# ax2 = ax[0, 1].twinx()
-# f2[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].plot(kind='bar', color='blue', alpha=0.7, ax=ax[0, 1])
-# f2["%"].plot(kind='line', color='red', alpha=0.1, marker='*', secondary_y=True, ax=ax[0, 1])
-# for i, txt in enumerate(f2["%"]):
-#     ax2.annotate(f'{txt:.2%}', (i, f2["%"].iloc[i]), textcoords="offset points", xytext=(0.1,0.1), ha='center', color='red')
+# col2
+df_plant = (df.groupby(["Plant Code"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum()).sort_values(by='FM 01_Invoices Revenue', ascending=False).head(10)
+df_plant.columns = ['Doanh Thu', 'Lãi Gộp']
+fig2 = px.bar(df_plant, x=df_plant.index, y=['Doanh Thu', 'Lãi Gộp'], title='Doanh thu - Lãi gộp theo Plant', labels={'value': 'Tỷ VND', 'variable': 'Loại'},
+             barmode='group')
+fig2.update_layout(xaxis_type='category')
+col2.plotly_chart(fig2)
 
-# for item in ax[0, 1].get_xticklabels():
-#     item.set_rotation(90)
+#col3
+df_dh = (df.groupby(["Product Group 4 Name"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum().reset_index().sort_values(by='FM 01_Invoices Revenue', ascending=False).head(10))
+df_dh.columns = ['Product Group 4 Name', 'Doanh Thu', 'Lãi Gộp']
+fig3 = px.bar(df_dh, x='Product Group 4 Name', y=['Doanh Thu', 'Lãi Gộp'], title='Doanh thu - Lãi gộp theo L4', labels={'value': 'Tỷ VND', 'variable': 'Loại'},
+             barmode='group')
+col3.plotly_chart(fig3, width=1400, height=400, use_container_width=False)
 
-# plt.tight_layout()
-# st.pyplot(fig)
-
-# fig 3
-# df = cphi.cphi()
-
-# st.write(df)
-# fig 4
+#col4
+df_channel = (df.groupby(["Channel Description"])[["FM 01_Invoices Revenue", "FM 07_Gross Profit"]].sum().reset_index())
+df_channel.columns = ['Channel', 'Doanh Thu', 'Lãi Gộp']
+fig4 = px.bar(df_channel, x='Channel', y=['Doanh Thu', 'Lãi Gộp'], title='Doanh thu - Lãi gộp theo Channel', labels={'value': 'Tỷ VND', 'variable': 'Loại'},
+             barmode='group')
+col4.plotly_chart(fig4, width=1400, height=400, use_container_width=False)
 
 # endtime
 end = time.time()
