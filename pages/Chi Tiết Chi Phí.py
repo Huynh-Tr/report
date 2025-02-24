@@ -50,21 +50,20 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 ''')
 
 dimGL = dim.glaccount()
-dimGL
 # filter 641
 dimGL_filter = dimGL[(dimGL["G/L Account"].str.startswith('64'))][~dimGL["G/L Account"].str.startswith('6411')]
 
 dimCH = dim.ten_ch()
 
-# parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/03h.parquet"
-parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\03h.parquet"
+parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/03h.parquet"
+# parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\03h.parquet"
 
 # dimGL
 df = pd.read_parquet(parquet)
 df = df.merge(dimCH, left_on="Cost Center", right_on="mã ch", how="left")
 df = df.merge(dimGL, on="G/L Account", how="left")
 df = df.drop(columns=["G/L Account", "Offsetting Account"])
-
+df
 # df
 cols = ["Ma-Ten", "Posting Date", "Tên tài khoản", "Description", "Amt", "Document Number", "Asset", "Cost Center"]
 df_details = df[cols]
@@ -82,13 +81,13 @@ with st.sidebar.expander("Select GL Name", expanded=False):
     gl_name = st.multiselect('Select GL Name:', dimGL_filter['Tên tài khoản'].dropna().unique(), label_visibility='collapsed')
 
 if plant_code == [] and gl_name == []:
-    df = df[(df["Posting Date"].dt.year.isin(year)) & (df["Posting Date"].dt.month.isin(month))]
+    df_details = df_details[(df_details["Posting Date"].dt.year.isin(year)) & (df_details["Posting Date"].dt.month.isin(month))]
 elif plant_code == []:
-    df = df[(df["Posting Date"].dt.year.isin(year)) & (df["Posting Date"].dt.month.isin(month)) & (df["Tên tài khoản"].isin(gl_name))]
+    df_details = df_details[(df_details["Posting Date"].dt.year.isin(year)) & (df_details["Posting Date"].dt.month.isin(month)) & (df_details["Tên tài khoản"].isin(gl_name))]
 elif gl_name == []:
-    df = df[(df["Cost Center"].isin(plant_code)) & (df["Posting Date"].dt.year.isin(year)) & (df["Posting Date"].dt.month.isin(month))]
+    df_details = df_details[(df_details["Cost Center"].isin(plant_code)) & (df_details["Posting Date"].dt.year.isin(year)) & (df_details["Posting Date"].dt.month.isin(month))]
 else:
-    df = df[(df["Cost Center"].isin(plant_code)) & (df["Posting Date"].dt.year.isin(year)) & (df["Posting Date"].dt.month.isin(month)) & (df["Tên tài khoản"].isin(gl_name))]
+    df_details = df_details[(df_details["Cost Center"].isin(plant_code)) & (df_details["Posting Date"].dt.year.isin(year)) & (df_details["Posting Date"].dt.month.isin(month)) & (df_details["Tên tài khoản"].isin(gl_name))]
 
 tab1, tab2 = st.tabs(["Chi tiết chi phí", "Tổng hợp chi phí"])
 tab1.write(f'Total: {df_details['Amt'].sum():,.0f}')
