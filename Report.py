@@ -32,10 +32,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-# center of the layout
-st.markdown('<h1 style="text-align: center;">✌Main Page✌</h1>', unsafe_allow_html=True)
-
-st.divider()
 
 # starttime
 start = time.time()
@@ -50,9 +46,6 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 }
 </style>
 ''')
-# st.session_state
-# st.session_state.authentication_status = False
-
 
 with st.sidebar.expander("Select year", expanded=False):
     year = [st.radio('Select year:', list(range(2025, 2023, -1)), index=0, label_visibility='collapsed')]
@@ -63,10 +56,11 @@ with st.sidebar.expander("Select month", expanded=False):
 with st.sidebar.expander("Select Plant Code", expanded=False):
     plant_code = [st.text_input('Select plant code:', 'Select All')]
 
-# if st.session_state["authentication_status"]:
-#     if st.sidebar.button("Logout"):
-#         st.session_state.authentication_status = False
-
+# center of the layout
+# st.markdown('<h1 style="text-align: center;">✌Main Page✌</h1>', unsafe_allow_html=True)
+# format header center align
+st.markdown('<h1 style="text-align: center;">✌Report</h1>', unsafe_allow_html=True)
+st.divider()
 st.header(f'Báo cáo kết quả vận hành tháng :blue[{month[0]} - {year[0]}]')
 st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 
