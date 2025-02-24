@@ -8,6 +8,8 @@ import numpy as np
 import os
 import time
 
+import dims
+
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -47,27 +49,11 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 </style>
 ''')
 
-@st.cache_data
-def glaccount():
-    linkgl = r"D:\pnj.com.vn\HuynhTN - Documents\Dim\Dim_DanhMucTaiKhoan.xlsx"
-    df = pd.read_excel(linkgl)
-    df["G/L Account"] = df["G/L Account"].astype(str)
-    return df
-
-@st.cache_data
-def ten_ch():
-    linkch = r"D:\pnj.com.vn\HuynhTN - Documents\Dim\Dim_DanhSach_CH.xlsx"
-    df = pd.read_excel(linkch, sheet_name="CuaHang (4cum)", header=2)
-    df = df[["mã ch", "TÊN CỬA HÀNG", "AREA"]]
-    # create new column Ma-Ten = mã ch - TÊN CỬA HÀNG
-    df["Ma-Ten"] = "[" + df["mã ch"].astype('str') + " ] " + df["TÊN CỬA HÀNG"]
-    return df
-
-dimGL = glaccount()
+dimGL = dims.glaccount()
 # filter 641
 dimGL_filter = dimGL[(dimGL["G/L Account"].str.startswith('64'))][~dimGL["G/L Account"].str.startswith('6411')]
 
-dimCH = ten_ch()
+dimCH = dims.ten_ch()
 
 # parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/03h.parquet"
 parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\03h.parquet"
