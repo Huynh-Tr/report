@@ -57,7 +57,7 @@ def fagll03h(output_path):
     excel_list_files_03h = glob(os.path.join(path_03h, "*.xlsx"))
     parquet_file_03h = os.path.join(output_path, '03h.parquet')
     df = pd.concat([pd.read_excel(f) for f in excel_list_files_03h], ignore_index=True)
-    df['Posting Date'] = pd.to_datetime(df['Posting Date']).dt.date
+    df['Posting Date'] = pd.to_datetime(df['Posting Date'])
     df['Payment reference'] = df['Payment reference'].astype(str).str.replace('.0', '')
     df['G/L Account'] = df['G/L Account'].astype(str).str.replace('.0', '')
     df['Document Number'] = df['Document Number'].astype(str).str.replace('.0', '')
