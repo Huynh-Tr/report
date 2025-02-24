@@ -73,10 +73,12 @@ def fagll03h():
     df = pd.concat([pd.read_excel(f) for f in excel_list_files_03h], ignore_index=True)
     df['Posting Date'] = pd.to_datetime(df['Posting Date']).dt.date
     df['Payment reference'] = df['Payment reference'].astype(str).str.replace('.0', '')
+    df['GL Account'] = df['GL Account'].astype(str).str.replace('.0', '')
     df['Document Number'] = df['Document Number'].astype(str).str.replace('.0', '')
-    df['Cost Center'] = df['Cost Center'].astype(str).str.replace('.0', '')
+    df['Cost Center'] = df['Cost Center'].astype(str).str.replace('.0', '').str[-4:]
     df['Asset'] = df['Asset'].astype(str).str.replace('.0', '')
-    cols = ["Company Code Currency Key", "Material", "Sales Document", "Billing Document", "Quantity", "Unit of Measure", "Order"]
+    df['Cost center'] = df['Cost center'].astype(str).str.right(4)
+    cols = ["Business Area", "Company Code Currency Key", "Material", "Sales Document", "Billing Document", "Quantity", "Unit of Measure", "Order"]
     df = df.drop(columns=cols)
 
     if not os.path.exists(parquet_file_03h):

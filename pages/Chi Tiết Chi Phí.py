@@ -1,23 +1,14 @@
 import streamlit as st
-import streamlit_authenticator as stauth
 import datetime
 import yagmail
 
 import pandas as pd 
 import numpy as np
-from glob import glob
 import os
 import time
-import matplotlib.pyplot as plt
 
 import warnings
 warnings.filterwarnings("ignore")
-
-# import dthu
-# import cphi
-# import tkho
-# import kqkd
-# import kh
 
 from helper import *
 
@@ -37,12 +28,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 # center of the layout
-st.markdown('<h1 style="text-align: center;">Chi Tiết Chi Phí</h1>', unsafe_allow_html=True)
+st.markdown('<h1 style="text-align: center;">✌Main Page✌</h1>', unsafe_allow_html=True)
+
 st.divider()
 
-st.header('Welcome to the dash board page!')
-st.subheader(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
+# starttime
+start = time.time()
 
+# data_tsv, data_vm = dthu.dthu()
 
 st.html('''
 <style>
@@ -53,6 +46,8 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 </style>
 ''')
 
-df = cphi.cphi()
+parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/03h.parquet"
+
+df = pd.read_parquet(parquet)
 
 st.write(df)

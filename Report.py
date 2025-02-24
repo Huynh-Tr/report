@@ -1,11 +1,8 @@
 import streamlit as st
 import datetime
-import streamlit_authenticator as stauth
-
 
 import pandas as pd 
 import numpy as np
-from glob import glob
 import os
 import time
 
@@ -53,6 +50,8 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 }
 </style>
 ''')
+# st.session_state
+# st.session_state.authentication_status = False
 
 
 with st.sidebar.expander("Select year", expanded=False):
@@ -64,9 +63,9 @@ with st.sidebar.expander("Select month", expanded=False):
 with st.sidebar.expander("Select Plant Code", expanded=False):
     plant_code = [st.text_input('Select plant code:', 'Select All')]
 
-if st.session_state["authentication_status"]:
-    if st.sidebar.button("Logout"):
-        st.session_state.authentication_status = False
+# if st.session_state["authentication_status"]:
+#     if st.sidebar.button("Logout"):
+#         st.session_state.authentication_status = False
 
 st.header(f'Báo cáo kết quả vận hành tháng :blue[{month[0]} - {year[0]}]')
 st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
