@@ -8,7 +8,7 @@ import numpy as np
 import os
 import time
 
-import dims
+import dim
 
 import warnings
 warnings.filterwarnings("ignore")
