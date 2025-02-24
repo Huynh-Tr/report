@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st 
 
 
-path_gl = r'https://raw.githubusercontent.com/Huynh-Tr/report/main/dims/Dim_DanhMucTaiKhoan.xlsx'
+path_gl = r'https://raw.githubusercontent.com/Huynh-Tr/report/main/dims/Dim_DanhMucTaiKhoan.XLSX'
 @st.cache_data
 def glaccount():
     df = pd.read_excel(path_gl)
