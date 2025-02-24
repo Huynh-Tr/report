@@ -49,11 +49,11 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 </style>
 ''')
 
-dimGL = dims.glaccount()
+dimGL = dim.glaccount()
 # filter 641
 dimGL_filter = dimGL[(dimGL["G/L Account"].str.startswith('64'))][~dimGL["G/L Account"].str.startswith('6411')]
 
-dimCH = dims.ten_ch()
+dimCH = dim.ten_ch()
 
 # parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/03h.parquet"
 parquet = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\03h.parquet"
