@@ -138,7 +138,7 @@ respond_2 = st.Page(
     "Phòng Ban/Phòng Ban 2.py", title="Phòng Ban 2", icon="✌"
 )
 admin_1 = st.Page(
-    "Quản Lý/Quản Lý 1.py",
+    "Report PnL.py",
     title="Quản Lý 1",
     icon="✌",
     default=(role == "Giám đốc - Chi nhánh"),
