@@ -16,3 +16,11 @@ def ten_ch():
     df["mã ch"] = df["mã ch"].astype(str)
     df["Ma-Ten"] = "[" + df["mã ch"] + " ] " + df["TÊN CỬA HÀNG"]
     return df
+
+path_dsql = r'https://raw.githubusercontent.com/Huynh-Tr/report/main/dims/dsql.xlsx'
+@st.cache_data
+def dsql():
+    df = pd.read_excel(path_dsql)
+    df['user'] = df['Email'].str.split('@').str[0]
+    df['pwd'] = [str(i) for i in range(len(df))]
+    return df
