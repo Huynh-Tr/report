@@ -120,7 +120,7 @@ def logout():
 level = st.session_state.level
 
 logout_page = st.Page(logout, title="Log out", icon="✔")
-settings = st.Page("settings.py", title="Settings", icon="⚙️")
+settings = st.Page("Chatbot.py", title="AI-ChatBot", icon="🧠")
 request_1 = st.Page(
     "pages/Chi Tiết Chi Phí.py",
     title="Cửa Hàng 1",
