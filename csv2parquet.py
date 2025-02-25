@@ -6,7 +6,7 @@ import os
 
 output_path = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit"
 
-def datamodelss(output_path):
+def datamodelss(output_path=output_path):
     path = r"D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"
     parquet_file = ['dthu.parquet', 'cphi.parquet', 'others.parquet', 'tonkho.parquet']
     csv_list_files = ([glob(os.path.join(path, "Dthu\\*.csv")),
@@ -26,7 +26,7 @@ def datamodelss(output_path):
             table = pa.Table.from_pandas(pd_df)
             pq.write_table(table, output_file)
 
-def kh(output_path):
+def kh(output_path=output_path):
     path_kh = r"D:\pnj.com.vn\HuynhTN - Documents\Data\Planning"
     excel_list_files_kh = glob(os.path.join(path_kh, "*.xlsx"))
     parquet_file_kh = os.path.join(output_path, 'kh.parquet')
@@ -52,7 +52,7 @@ def kh(output_path):
         table = pa.Table.from_pandas(df)
         pq.write_table(table, parquet_file_kh)
 
-def fagll03h(output_path):
+def fagll03h(output_path=output_path):
     path_03h = r"D:\pnj.com.vn\HuynhTN - Documents\Data\SAP (FAGLL03H)"
     excel_list_files_03h = glob(os.path.join(path_03h, "*.xlsx"))
     parquet_file_03h = os.path.join(output_path, '03h.parquet')
@@ -77,9 +77,9 @@ def fagll03h(output_path):
         pq.write_table(table, parquet_file_03h)
 
 def main():
-    # datamodelss()
+    datamodelss()
     # kh()
-    fagll03h(output_path)
+    # fagll03h(output_path)
 
 if __name__ == "__main__":
     main()
