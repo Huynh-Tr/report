@@ -68,6 +68,9 @@ st.divider()
 st.header(f'Báo cáo kết quả vận hành tháng :blue[{month[0]} - {year[0]}]')
 st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 
+tsv, vm = dthu.dthu()
+vm[vm["Month year"] == "2025-01"]["FM 07_Gross Profit"].sum() / 1e9
+
 if plant_code==['Select All']:
     # chi tieu dthu lg
     result_dthu  = dthu.chitieu(year=year, month=month, plant_code='Select All')
