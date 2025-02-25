@@ -6,21 +6,6 @@ import warnings
 warnings.filterwarnings("ignore")
 
 path = r'https://raw.githubusercontent.com/Huynh-Tr/report/main/kh.parquet'
-# path2024 = r'https://raw.githubusercontent.com/Huynh-Tr/report/main/Planning2024.xlsx'
-# paths = {2024: path2024, 2025: path2025}
-
-# def kehoach(path):
-#     kehoach = pd.read_excel(path, sheet_name="Budget_Total", header=1)
-#     kehoach = kehoach[kehoach["Tháng"].isin(range(1, 13))]
-#     col = ["T", "9999", "VP"]
-#     kehoach = kehoach.drop(columns=col)
-#     # unstack the dataframe keep 3 first columns name level_3 is Plant Code
-#     kehoach = kehoach.set_index(['Chi Phí', 'Chi tiết', 'Tháng']).stack().reset_index(name='Amt')
-#     kehoach = kehoach.rename(columns={"level_3": "Plant Code"})
-#     kehoach.groupby(["Chi Phí", "Chi tiết"])["Amt"].sum().reset_index()
-#     kehoach = kehoach[kehoach['Amt'] != 0]
-#     kehoach["Tháng"] = pd.to_datetime(kehoach["Tháng"].astype('str') + '-' + path[-9:-5]).dt.to_period('M')
-#     return kehoach
 
 def kehoach():
     df = pd.read_parquet(path)
