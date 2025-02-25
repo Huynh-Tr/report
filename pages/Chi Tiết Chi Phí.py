@@ -38,7 +38,9 @@ st.markdown('<h1 style="text-align: center;">✔Chi tiết chi phí</h1>', unsaf
 # starttime
 start = time.time()
 
-# data_tsv, data_vm = dthu.dthu()
+# welcome
+st.write(f'Xin chào **{st.session_state["user"]}**')
+st.write(f'Chức danh: *{st.session_state['role']}*')
 
 st.html('''
 <style>

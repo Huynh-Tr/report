@@ -40,6 +40,10 @@ st.markdown(
 st.markdown('<h1 style="text-align: center;">Dash Board</h1>', unsafe_allow_html=True)
 st.divider()
 
+# welcome
+st.write(f'Xin chào **{st.session_state["user"]}**')
+st.write(f'Chức danh: *{st.session_state['role']}*')
+
 st.header('Welcome to the dash board page!')
 st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 

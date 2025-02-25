@@ -33,6 +33,9 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 </style>
 ''')
 
+# welcome
+st.write(f'Xin chào **{st.session_state["user"]}**')
+st.write(f'Chức danh: *{st.session_state['role']}*')
 
 # divide to 5 columns
 col1, col2 = st.columns(2)

@@ -16,3 +16,8 @@ st.markdown(
 # center of the layout
 st.markdown('<h1 style="text-align: center;">Dash Board</h1>', unsafe_allow_html=True)
 st.divider()
+
+
+# welcome
+st.write(f'Xin chào **{st.session_state["user"]}**')
+st.write(f'Chức danh: *{st.session_state['role']}*')

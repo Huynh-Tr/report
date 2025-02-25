@@ -3,31 +3,31 @@ import pandas as pd
 import time
 
 # layout wide
-# st.set_page_config(layout='wide')
+st.set_page_config(layout='wide')
 # hide menu
-# st.markdown(
-#     """
-#     <style>
-#     #root > div:nth-child(1) > div.withScreencast > div > header > div.stAppToolbar.st-emotion-cache-15ecox0.e4hpqof2 {
-#         visibility: hidden;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True,
-# )
+st.markdown(
+    """
+    <style>
+    #root > div:nth-child(1) > div.withScreencast > div > header > div.stAppToolbar.st-emotion-cache-15ecox0.e4hpqof2 {
+        visibility: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 # # starttime
 # start = time.time()
 
 
-# st.html('''
-# <style>
-# div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
-#     max-height: 38px !important; /* Fix the height */
-#     overflow: auto !important;
-# }
-# </style>
-# ''')
+st.html('''
+<style>
+div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
+    max-height: 38px !important; /* Fix the height */
+    overflow: auto !important;
+}
+</style>
+''')
 
 p = r'D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\dims\dsql.xlsx'
 df = pd.read_excel(p)
@@ -41,27 +41,27 @@ df['pwd'] = [str(i) for i in range(len(df))]
 
 # login
 
-st.session_state.role = None
+# st.session_state.role = None
 
-def login():
-    name = st.text_input('Username', key='name')
-    password = st.text_input('Password', type='password', key='password')
-    if st.button('Login'):
+# def login():
+#     name = st.text_input('Username', key='name')
+#     password = st.text_input('Password', type='password', key='password')
+#     if st.button('Login'):
         # st.session_state
-        if (password == df[df['user']==name]['pwd'].values):
-            st.session_state.role = role
-            st.session_state.user = df[df['user']==name]['HỌ VÀ TÊN'].values[0]
-            st.session_state.role = df[df['user']==name]['Chức danh'].values[0]
-            st.session_state.email = df[df['user']==name]['Email'].values[0]
-            st.write(f'Xin chào **{st.session_state["user"]}**')
-            st.write(f'Chức danh: *{st.session_state['role']}*')
-            st.rerun()
+#         if (password == df[df['user']==name]['pwd'].values):
+#             st.session_state.role = role
+#             st.session_state.user = df[df['user']==name]['HỌ VÀ TÊN'].values[0]
+#             st.session_state.role = df[df['user']==name]['Chức danh'].values[0]
+#             st.session_state.email = df[df['user']==name]['Email'].values[0]
+#             st.write(f'Xin chào **{st.session_state["user"]}**')
+#             st.write(f'Chức danh: *{st.session_state['role']}*')
+#             st.rerun()
 
-def logout():
+# def logout():
     # st.button('Logout', on_click=st.session_state.clear)
     # st.session_state.authentication_status = False
-    st.session_state.role = None
-    st.rerun()
+    # st.session_state.role = None
+    # st.rerun()
 
 #         # elif st.session_state["authentication_status"] is False:
 #         #     st.error('Username/password is incorrect')
@@ -88,20 +88,30 @@ import streamlit as st
 if "role" not in st.session_state:
     st.session_state.role = None
 
-ROLES = [None, "Requester", "Responder", "Admin"]
+# ROLES = [None, "Giám đốc - Chi nhánh", "Quản lý - Marketing", "Quản lý nhóm - Hành chính"]
 
 
 def login():
-
     st.header("Log in")
-    role = st.selectbox("Choose your role", ROLES)
+    # role = st.selectbox("Choose your role", ROLES)
+    name = st.text_input('Username', key='name')
+    password = st.text_input('Password', type='password', key='password')
 
     if st.button("Log in"):
-        st.session_state.role = role
-        st.rerun()
+        if (password == df[df['user']==name]['pwd'].values):
+            st.session_state.role = role
+            st.session_state.user = df[df['user']==name]['HỌ VÀ TÊN'].values[0]
+            st.session_state.role = df[df['user']==name]['Chức danh'].values[0]
+            st.session_state.email = df[df['user']==name]['Email'].values[0]
+            # st.write(f'Xin chào **{st.session_state["user"]}**')
+            # st.write(f'Chức danh: *{st.session_state['role']}*')
+            st.rerun()
+        # st.session_state.role = role
+        # st.rerun()
 
 
 def logout():
+    st.session_state.user = None
     st.session_state.role = None
     st.rerun()
 
@@ -111,45 +121,44 @@ logout_page = st.Page(logout, title="Log out", icon="✔")
 settings = st.Page("settings.py", title="Settings", icon="⚙️")
 request_1 = st.Page(
     "pages/Chi Tiết Chi Phí.py",
-    title="Request 1",
+    title="Cửa Hàng 1",
     icon="✌",
     default=(role == "Quản lý - Marketing"),
 )
 request_2 = st.Page(
-    "request/request_2.py", title="Request 2", icon="✌"
+    "Cửa Hàng/Cửa Hàng 2.py", title="Cửa Hàng 2", icon="✌"
 )
 respond_1 = st.Page(
     "pages/Dashboard.py",
-    title="Respond 1",
+    title="Phòng Ban 1",
     icon="✌",
     default=(role == "Quản lý nhóm - Hành chính"),
 )
 respond_2 = st.Page(
-    "respond/respond_2.py", title="Respond 2", icon="✌"
+    "Phòng Ban/Phòng Ban 2.py", title="Phòng Ban 2", icon="✌"
 )
 admin_1 = st.Page(
-    "admin/admin_1.py",
-    title="Admin 1",
+    "Quản Lý/Quản Lý 1.py",
+    title="Quản Lý 1",
     icon="✌",
     default=(role == "Giám đốc - Chi nhánh"),
 )
-admin_2 = st.Page("pages/Giá Vàng.py", title="Admin 2", icon="✌")
+admin_2 = st.Page("pages/Giá Vàng.py", title="Quản Lý 2", icon="✌")
 
 account_pages = [logout_page, settings]
 request_pages = [request_1, request_2]
 respond_pages = [respond_1, respond_2]
 admin_pages = [admin_1, admin_2]
 
-st.title("Request manager")
 # st.logo("images/horizontal_blue.png", icon_image="images/icon_blue.png")
 
 page_dict = {}
-if st.session_state.role in ["Giám đốc - Chi nhánh", "Quản lý nhóm - Hành chính"]:
-    page_dict["Request"] = request_pages
 if st.session_state.role in ["Giám đốc - Chi nhánh", "Quản lý - Marketing"]:
-    page_dict["Respond"] = respond_pages
+    page_dict["Cửa Hàng"] = request_pages
+if st.session_state.role in ["Giám đốc - Chi nhánh", "Quản lý nhóm - Hành chính"]:
+    page_dict["Phòng Ban"] = respond_pages
 if st.session_state.role == "Giám đốc - Chi nhánh":
-    page_dict["Admin"] = admin_pages
+    page_dict["Quản Lý"] = admin_pages
 
 if len(page_dict) > 0:
     pg = st.navigation({"Account": account_pages} | page_dict)
@@ -158,4 +167,4 @@ else:
 
 pg.run()
 
-st.session_state
+# st.session_state
