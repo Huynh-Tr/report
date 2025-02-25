@@ -77,9 +77,9 @@ def fagll03h(output_path=output_path):
         pq.write_table(table, parquet_file_03h)
 
 def main():
-    datamodelss()
+    # datamodelss()
     # kh()
-    # fagll03h(output_path)
+    fagll03h(output_path)
 
 if __name__ == "__main__":
     main()
