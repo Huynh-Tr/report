@@ -19,7 +19,7 @@ st.markdown(
 
 # # starttime
 # start = time.time()
-
+# https://api.github.com/repos/Huynh-Tr/report/contents/
 
 st.html('''
 <style>
@@ -31,7 +31,7 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 ''')
 
 df = dim.dsql()
-df
+# df
 # roles = df['Chức danh'].unique()
 
 # tab1, tab2 = st.tabs(['login', 'register'])
@@ -82,8 +82,11 @@ df
 
 import streamlit as st
 
-if "role" not in st.session_state:
-    st.session_state.role = None
+if "level" not in st.session_state:
+    st.session_state.level = None
+
+# if "role" not in st.session_state:
+#     st.session_state.role = None
 
 # ROLES = [None, "Giám đốc - Chi nhánh", "Quản lý - Marketing", "Quản lý nhóm - Hành chính"]
 
@@ -96,10 +99,12 @@ def login():
 
     if st.button("Log in"):
         if (password == df[df['user']==name]['pwd'].values):
-            st.session_state.role = role
+            # st.session_state.role = role
             st.session_state.user = df[df['user']==name]['HỌ VÀ TÊN'].values[0]
             st.session_state.role = df[df['user']==name]['Chức danh'].values[0]
             st.session_state.email = df[df['user']==name]['Email'].values[0]
+            st.session_state.level = df[df['user']==name]['Cấp'].values[0]
+            st.session_state.Aut = df[df['user']==name]['Aut'].values[0]
             # st.write(f'Xin chào **{st.session_state["user"]}**')
             # st.write(f'Chức danh: *{st.session_state['role']}*')
             st.rerun()
@@ -108,11 +113,11 @@ def login():
 
 
 def logout():
-    st.session_state.user = None
+    st.session_state.level = None
     st.session_state.role = None
     st.rerun()
 
-role = st.session_state.role
+level = st.session_state.level
 
 logout_page = st.Page(logout, title="Log out", icon="✔")
 settings = st.Page("settings.py", title="Settings", icon="⚙️")
@@ -120,7 +125,7 @@ request_1 = st.Page(
     "pages/Chi Tiết Chi Phí.py",
     title="Cửa Hàng 1",
     icon="✌",
-    default=(role == "Quản lý - Marketing"),
+    default=(level == 0),
 )
 request_2 = st.Page(
     "Cửa Hàng/Cửa Hàng 2.py", title="Cửa Hàng 2", icon="✌"
@@ -129,7 +134,7 @@ respond_1 = st.Page(
     "pages/Dashboard.py",
     title="Phòng Ban 1",
     icon="✌",
-    default=(role == "Quản lý nhóm - Hành chính"),
+    default=(level == 1),
 )
 respond_2 = st.Page(
     "Phòng Ban/Phòng Ban 2.py", title="Phòng Ban 2", icon="✌"
@@ -138,7 +143,7 @@ admin_1 = st.Page(
     "Report PnL.py",
     title="Quản Lý 1",
     icon="✌",
-    default=(role == "Giám đốc - Chi nhánh"),
+    default=(level == 3),
 )
 admin_2 = st.Page("pages/Giá Vàng.py", title="Quản Lý 2", icon="✌")
 
@@ -150,11 +155,11 @@ admin_pages = [admin_1, admin_2]
 # st.logo("images/horizontal_blue.png", icon_image="images/icon_blue.png")
 
 page_dict = {}
-if st.session_state.role in ["Giám đốc - Chi nhánh", "Quản lý - Marketing"]:
+if st.session_state.level in [0, 1, 3]:
     page_dict["Cửa Hàng"] = request_pages
-if st.session_state.role in ["Giám đốc - Chi nhánh", "Quản lý nhóm - Hành chính"]:
+if st.session_state.level in [2, 3]:
     page_dict["Phòng Ban"] = respond_pages
-if st.session_state.role == "Giám đốc - Chi nhánh":
+if st.session_state.level in [3]:
     page_dict["Quản Lý"] = admin_pages
 
 if len(page_dict) > 0:
