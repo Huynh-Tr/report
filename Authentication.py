@@ -1,6 +1,7 @@
 import streamlit as st 
 import pandas as pd 
 import time
+import dim
 
 # layout wide
 st.set_page_config(layout='wide')
@@ -29,12 +30,8 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 </style>
 ''')
 
-p = r'D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\dims\dsql.xlsx'
-df = pd.read_excel(p)
-df['user'] = df['Email'].str.split('@').str[0]
-df['pwd'] = [str(i) for i in range(len(df))]
-# df
-
+df = dim.dsql()
+df
 # roles = df['Chức danh'].unique()
 
 # tab1, tab2 = st.tabs(['login', 'register'])
