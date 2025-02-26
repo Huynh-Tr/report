@@ -10,7 +10,7 @@ warnings.filterwarnings("ignore")
 
 parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/input/tonkho.parquet"
 
-# @st.cache_data
+@st.cache_data
 def tkho():
     df = pd.read_parquet(parquet)
     df = df[df["Month year"] != "Month year"]

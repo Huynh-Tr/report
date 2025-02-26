@@ -57,7 +57,7 @@ dimGL_filter = dimGL[(dimGL["G/L Account"].str.startswith('64'))][~dimGL["G/L Ac
 
 dimCH = dim.ten_ch()
 
-# @st.cache_data
+@st.cache_data
 def sap03h():
     parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/input/03h.parquet"
 
