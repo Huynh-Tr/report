@@ -62,9 +62,11 @@ if prompt := st.chat_input("What is up?"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        response = chat.send_message(
-            [prompt, combined_image]
-        )
+        if len(uploaded_file) > 0:
+            response = chat.send_message([prompt, combined_image])
+        else:
+            response = chat.send_message(prompt)
+
         st.write_stream(stream_data(response.text))
     st.session_state.history.append({"role": "assistant", "content": response.text})
 
