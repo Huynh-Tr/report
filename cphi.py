@@ -7,7 +7,7 @@ import streamlit as st
 import warnings
 warnings.filterwarnings("ignore")
 
-parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.parquet"
+parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/input/cphi.parquet"
 
 @st.cache_data
 def cphi():        
