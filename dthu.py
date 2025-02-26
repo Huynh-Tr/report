@@ -8,9 +8,9 @@ import helper
 import warnings
 warnings.filterwarnings("ignore")
 
-parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/dthu.parquet"
+parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/input/dthu.parquet"
 
-# @st.cache_data
+@st.cache_data
 def dthu():
     df = pd.read_parquet(parquet)
     df = df[df["Month year"] != "Month year"]

@@ -8,7 +8,7 @@ import helper
 import warnings
 warnings.filterwarnings("ignore")
 
-parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/tonkho.parquet"
+parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/input/tonkho.parquet"
 
 # @st.cache_data
 def tkho():

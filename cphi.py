@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/cphi.parquet"
 
-# @st.cache_data
+@st.cache_data
 def cphi():        
     df = pd.read_parquet(parquet)
     df["Month year"] = pd.to_datetime(df["Month year"]).dt.to_period('M')

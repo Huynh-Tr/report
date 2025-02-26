@@ -59,7 +59,7 @@ dimCH = dim.ten_ch()
 
 # @st.cache_data
 def sap03h():
-    parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/03h.parquet"
+    parquet = r"https://raw.githubusercontent.com/Huynh-Tr/report/main/input/03h.parquet"
 
     # dimGL
     df = pd.read_parquet(parquet)

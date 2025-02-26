@@ -4,7 +4,7 @@ import pandas as pd
 from glob import glob
 import os
 
-output_path = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit"
+output_path = r"D:\pnj.com.vn\HuynhTN - Documents\Project\streamlit\input"
 
 def datamodelss(output_path=output_path):
     path = r"D:\pnj.com.vn\HuynhTN - Documents\Data\DataBI"

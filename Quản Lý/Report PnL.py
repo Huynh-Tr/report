@@ -60,14 +60,6 @@ with st.sidebar.expander("Select month", expanded=False):
 with st.sidebar.expander("Select Plant Code", expanded=False):
     plant_code = [st.text_input('Select plant code:', 'Select All')]
 
-# center of the layout
-# st.markdown('<h1 style="text-align: center;">✌Main Page✌</h1>', unsafe_allow_html=True)
-# format header center align
-st.markdown('<h1 style="text-align: center;">✌Report</h1>', unsafe_allow_html=True)
-st.divider()
-st.header(f'Báo cáo kết quả vận hành tháng :blue[{month[0]} - {year[0]}]')
-st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
-
 if plant_code==['Select All']:
     # chi tieu dthu lg
     result_dthu  = dthu.chitieu(year=year, month=month, plant_code='Select All')
@@ -144,6 +136,14 @@ cols = ['Chỉ Tiêu', '', '  Thực Hiện  ', '  Cùng Kỳ    ', '%TH-CK', 'K
         'LK Thực Hiện ', 'KH Năm', '%LK-KH Năm']
 df = df[cols]
 
+
+# financial ratios
+
+
+
+
+
+
 # styling
 # Define the styling function for the DataFrame
 bold_rows_df = lambda x: ['font-weight: bold' if x.name in [0, 3, 6, 18, 21, 22, 23, 24] else '' for _ in x]
@@ -165,10 +165,30 @@ styled_df = styled_df.format("{:.2f}", subset=pd.IndexSlice[:, ['  Thực Hiện
 # hide index of dataframe
 styled_df = styled_df.hide(axis='index')
 
-st.write(styled_df.to_html(), unsafe_allow_html=True)
+tab1, tab2 = st.tabs(["PnL", "Ratios"])
+with tab1:
+    st.markdown('<h1 style="text-align: center;">✌Report</h1>', unsafe_allow_html=True)
+    st.header(f'Báo cáo kết quả vận hành tháng :blue[{month[0]} - {year[0]}]')
+    st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
 
-# endtime
-end = time.time()
-# convert runtime
-run_time = time.gmtime(end - start)
-st.write("Run time: ", time.strftime("%M:%S", run_time))
+    st.write(styled_df.to_html(), unsafe_allow_html=True)
+
+    # endtime
+    end = time.time()
+    # convert runtime
+    run_time = time.gmtime(end - start)
+    st.write("Run time: ", time.strftime("%M:%S", run_time))
+
+with tab2:
+
+    st.markdown('<h1 style="text-align: center;">Financial Ratios</h1>', unsafe_allow_html=True)
+    st.markdown(f'Today: {datetime.datetime.now().strftime('%d-%m-%Y')}')
+
+
+
+    # endtime
+    end = time.time()
+    # convert runtime
+    run_time = time.gmtime(end - start)
+    st.write("Run time: ", time.strftime("%M:%S", run_time))
+    

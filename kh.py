@@ -3,10 +3,13 @@ from glob import glob
 import os
 import requests
 import warnings
+import streamlit as st
+
 warnings.filterwarnings("ignore")
 
-path = r'https://raw.githubusercontent.com/Huynh-Tr/report/main/kh.parquet'
+path = r'https://raw.githubusercontent.com/Huynh-Tr/report/main/input/kh.parquet'
 
+@st.cache_data
 def kehoach():
     df = pd.read_parquet(path)
     return df
