@@ -1,12 +1,12 @@
 import google.generativeai as genai
 # gg_key = r"AIzaSyALfue942SkEWGJPG6P8GZGgm7Bnkevd7Q"
-genai.configure(api_key=st.secrets["gg_key"])
 import re
 import streamlit as st
 import PIL.Image
 import time
 
 
+genai.configure(api_key=st.secrets["gg_key"])
 # if "chat" not in st.session_state:
 #     st.session_state.chat = []
 if "history" not in st.session_state:
