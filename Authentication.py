@@ -28,6 +28,8 @@ div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div {
 </style>
 ''')
 
+st.secrets
+
 df = dim.dsql()
 
 if "level" not in st.session_state:
