@@ -1,6 +1,6 @@
 import google.generativeai as genai
-API_key = r"AIzaSyALfue942SkEWGJPG6P8GZGgm7Bnkevd7Q"
-genai.configure(api_key=API_key)
+# gg_key = r"AIzaSyALfue942SkEWGJPG6P8GZGgm7Bnkevd7Q"
+genai.configure(api_key=st.secrets["gg_key"])
 import re
 import streamlit as st
 import PIL.Image
