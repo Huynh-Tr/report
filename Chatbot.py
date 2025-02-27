@@ -6,7 +6,7 @@ import PIL.Image
 import time
 
 
-genai.configure(api_key=st.secrets["gg_key"])
+genai.configure(api_key=st.secrets.API_key["gg_key"])
 # if "chat" not in st.session_state:
 #     st.session_state.chat = []
 if "history" not in st.session_state:
