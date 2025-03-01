@@ -7,7 +7,7 @@ import dim
 st.set_page_config(layout='wide')
 
 # add logo
-st.logo(size="medium", link="https://cdn.pnj.io/images/logo/pnj.com.vn.png")
+st.logo(LOGO_URL_LARGE, size="medium", link="https://cdn.pnj.io/images/logo/pnj.com.vn.png")
 # hide menu
 st.markdown(
     """
